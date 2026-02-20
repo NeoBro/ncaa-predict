@@ -3,6 +3,7 @@ import argparse
 
 import keras
 import numpy as np
+import tensorflow as tf
 from keras.layers import Conv2D, Dense, Flatten
 from keras.models import Sequential
 
@@ -12,6 +13,24 @@ from ncaa_predict.util import list_arg
 
 DEFAULT_BATCH_SIZE = 512
 DEFAULT_EPOCHS = 20
+
+
+def configure_runtime(gpu_memory_growth, gpu_memory_limit_mb, mixed_precision):
+    gpus = tf.config.list_physical_devices("GPU")
+    if gpus and gpu_memory_limit_mb is not None:
+        tf.config.set_logical_device_configuration(
+            gpus[0], [tf.config.LogicalDeviceConfiguration(
+                memory_limit=gpu_memory_limit_mb)])
+        print("Configured GPU memory limit: %s MB on GPU 0" % gpu_memory_limit_mb)
+
+    if gpus and gpu_memory_growth:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        print("Enabled GPU memory growth on %s GPU(s)" % len(gpus))
+
+    if mixed_precision:
+        keras.mixed_precision.set_global_policy("mixed_float16")
+        print("Enabled mixed precision policy: mixed_float16")
 
 
 def build_model():
@@ -67,11 +86,28 @@ if __name__ == "__main__":
         "--player-year-offset", default=-1, type=int,
         help="Offset applied to player stats year relative to game year. "
              "Use -1 to avoid same-season leakage. (default: %(default)s)")
+    parser.add_argument(
+        "--gpu-memory-growth", action="store_true", default=True,
+        help="Enable TensorFlow GPU memory growth. (default: enabled)")
+    parser.add_argument(
+        "--no-gpu-memory-growth", action="store_false", dest="gpu_memory_growth",
+        help="Disable TensorFlow GPU memory growth.")
+    parser.add_argument(
+        "--gpu-memory-limit-mb", default=None, type=int,
+        help="Optional hard limit for GPU 0 memory in MB.")
+    parser.add_argument(
+        "--mixed-precision", action="store_true", default=False,
+        help="Enable mixed_float16 policy.")
     args = parser.parse_args()
 
     overlap = set(args.train_years) & set(args.validation_years)
     if overlap:
         raise ValueError("Train/validation overlap is not allowed: %s" % sorted(overlap))
+
+    configure_runtime(
+        gpu_memory_growth=args.gpu_memory_growth,
+        gpu_memory_limit_mb=args.gpu_memory_limit_mb,
+        mixed_precision=args.mixed_precision)
 
     model = build_model()
     train_features, train_labels = load_data_multiyear(
