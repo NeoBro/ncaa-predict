@@ -102,3 +102,24 @@ data_cache*
 csv/players
 csv/games
 lib64
+
+# Project-generated data and artifacts
+csv/ncaa_games_*.csv
+csv/ncaa_players_*.csv
+csv/ncaa_games_all.csv
+csv/ncaa_players_all.csv
+!csv/ncaa_schools.csv
+!csv/README.md
+
+models/*.keras
+models/*.h5
+models/*.json
+!models/.gitkeep
+
+reports/*.json
+reports/*.csv
+reports/*.log
+!reports/.gitkeep
+
+logs/
+external/kaggle_mania/
