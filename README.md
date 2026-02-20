@@ -3,6 +3,11 @@ and upset-aware pick generation.
 
 All scripts support `--help`.
 
+## Runbook
+
+For the live 2026 tournament workflow (Selection Sunday through final pick sheet), use:
+- [`RUNBOOK_2026.md`](RUNBOOK_2026.md)
+
 ## Setup
 
 ```bash
@@ -128,6 +133,14 @@ Notes:
 
 This reports accuracy/upset-recall tradeoffs for upset-control configs.
 
+Select policy presets from the sweep:
+
+```bash
+.venv/bin/python select_pick_policies.py \
+  --sensitivity-report reports/tourney_sensitivity_full.json \
+  --out reports/pick_policies.json
+```
+
 ## Release Gates
 
 ```bash
@@ -140,7 +153,7 @@ Fails if minimum folds/accuracy/upset recall (or missing-year limits) are not me
 
 ## Pick Sheet and Bracket
 
-Generate bracket JSON from Kaggle slots/seeds:
+Generate bracket JSON from Kaggle slots/seeds (historical years):
 
 ```bash
 .venv/bin/python generate_bracket_json.py \
@@ -148,6 +161,38 @@ Generate bracket JSON from Kaggle slots/seeds:
   -y 2018 \
   --name-source ncaa \
   -o brackets/2018.json
+```
+
+### Current-year workflow (e.g. 2026) with custom seeds
+
+When Kaggle seeds are not published yet, provide a local seeds file.
+
+Template:
+- `brackets/custom_seeds_template.csv`
+
+Required columns:
+- `season` (or `year`)
+- `seed` (region-coded: `W01`, `X12`, `Y16A`, etc.)
+- `team_name` (must resolve to `csv/ncaa_schools.csv`)
+
+Validate custom seeds first:
+
+```bash
+.venv/bin/python validate_custom_seeds.py \
+  --seeds-csv brackets/custom_seeds_2026.csv \
+  -y 2026 \
+  --report-out reports/custom_seeds_2026_validation.json \
+  --strict
+```
+
+Build bracket JSON from custom seeds:
+
+```bash
+.venv/bin/python generate_bracket_json.py \
+  --kaggle-dir external/kaggle_mania \
+  -y 2026 \
+  --custom-seeds-csv brackets/custom_seeds_2026.csv \
+  -o brackets/2026.json
 ```
 
 Validate bracket/team mappings:
@@ -173,6 +218,21 @@ Generate picks:
   -y 2018 \
   --bracket-file brackets/2018.json \
   -o reports/pick_sheet_2018.csv
+```
+
+Generate picks for current year with custom seeds:
+
+```bash
+.venv/bin/python generate_pick_sheet.py \
+  --score-model-in models/tourney_score_pipeline_prod.json \
+  --meta-model-in models/tourney_meta_model_prod.json \
+  --kaggle-dir external/kaggle_mania \
+  --custom-seeds-csv brackets/custom_seeds_2026.csv \
+  --all-games-csv csv/ncaa_games_all.csv \
+  --pick-style balanced \
+  -y 2026 \
+  --bracket-file brackets/2026.json \
+  -o reports/pick_sheet_2026.csv
 ```
 
 `--pick-style` options:

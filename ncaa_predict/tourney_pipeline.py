@@ -156,6 +156,57 @@ def load_seed_name_map(kaggle_dir):
     return name_seed
 
 
+def load_custom_seed_map(custom_seeds_csv, schools_df, year=None):
+    """
+    Load user-provided seeds with columns:
+      - season (or year) [optional if --year is passed]
+      - seed
+      - team_id (optional) OR team_name (optional)
+    Returns:
+      - id_seed_map: {(season, school_id) -> seed_int}
+      - name_seed_map: {(season, normalized_name) -> seed_int}
+    """
+    if not os.path.exists(custom_seeds_csv):
+        raise FileNotFoundError("Missing custom seeds CSV: %s" % custom_seeds_csv)
+    seeds = pd.read_csv(custom_seeds_csv)
+    cols = {c.lower(): c for c in seeds.columns}
+    if "seed" not in cols:
+        raise ValueError("Custom seeds CSV must include 'seed' column")
+    if "team_id" not in cols and "team_name" not in cols:
+        raise ValueError("Custom seeds CSV must include 'team_id' or 'team_name'")
+
+    season_col = cols.get("season") or cols.get("year")
+    if season_col is None and year is None:
+        raise ValueError("Custom seeds CSV requires season/year column or explicit year")
+
+    name_to_ids = {}
+    for row in schools_df.itertuples():
+        key = normalize_team_name(row.school_name)
+        name_to_ids.setdefault(key, set()).add(int(row.school_id))
+
+    id_seed = {}
+    name_seed = {}
+    for row in seeds.itertuples():
+        seed_val = seed_to_int(getattr(row, cols["seed"]))
+        if seed_val is None:
+            continue
+        season = int(year if year is not None else getattr(row, season_col))
+
+        school_id = None
+        if "team_id" in cols and pd.notna(getattr(row, cols["team_id"])):
+            school_id = int(getattr(row, cols["team_id"]))
+        elif "team_name" in cols and pd.notna(getattr(row, cols["team_name"])):
+            n = normalize_team_name(getattr(row, cols["team_name"]))
+            ids = sorted(name_to_ids.get(n, []))
+            if len(ids) == 1:
+                school_id = ids[0]
+            name_seed[(season, n)] = seed_val
+
+        if school_id is not None:
+            id_seed[(season, int(school_id))] = int(seed_val)
+    return id_seed, name_seed
+
+
 def season_team_stats_from_csv(all_games_csv, season):
     games = pd.read_csv(
         all_games_csv,

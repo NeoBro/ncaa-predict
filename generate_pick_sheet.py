@@ -17,6 +17,7 @@ from ncaa_predict.score_pipeline import (
 )
 from ncaa_predict.tourney_pipeline import (
     build_kaggle_to_ncaa_id_map,
+    load_custom_seed_map,
     load_seed_name_map,
     load_seed_map,
     season_team_stats_from_csv,
@@ -198,6 +199,7 @@ if __name__ == "__main__":
     parser.add_argument("--score-model-in", required=True)
     parser.add_argument("--meta-model-in", required=True)
     parser.add_argument("--kaggle-dir", required=True)
+    parser.add_argument("--custom-seeds-csv", default=None, help="Optional custom seeds CSV (for current seasons not in Kaggle seeds).")
     parser.add_argument("--year", "-y", required=True, type=int)
     parser.add_argument("--all-games-csv", default=None, help="Optional consolidated games CSV for cutoff-aware stats.")
     parser.add_argument("--cutoff-month", type=int, default=None)
@@ -219,6 +221,17 @@ if __name__ == "__main__":
     with open(args.meta_model_in) as f:
         meta_payload = json.load(f)
 
+    presets = {
+        "safe": {"upset_bias": 0.0, "upset_threshold": 1.0, "min_underdog_win_prob": 0.0},
+        "balanced": {"upset_bias": 0.05, "upset_threshold": 0.40, "min_underdog_win_prob": 0.35},
+        "chaos": {"upset_bias": 0.10, "upset_threshold": 0.35, "min_underdog_win_prob": 0.30},
+    }
+    if args.pick_style != "custom":
+        p = presets[args.pick_style]
+        args.upset_bias = p["upset_bias"]
+        args.upset_threshold = p["upset_threshold"]
+        args.min_underdog_win_prob = p["min_underdog_win_prob"]
+
     schools = load_ncaa_schools()
     school_ids = {row.school_name: int(row.school_id) for row in schools.itertuples()}
     # Ensure every bracket team resolves.
@@ -235,6 +248,11 @@ if __name__ == "__main__":
     kaggle_to_ncaa, _, _ = build_kaggle_to_ncaa_id_map(args.kaggle_dir, schools)
     seed_map = load_seed_map(args.kaggle_dir, kaggle_to_ncaa_id_map=kaggle_to_ncaa)
     seed_name_map = load_seed_name_map(args.kaggle_dir)
+    if args.custom_seeds_csv:
+        custom_id_seed, custom_name_seed = load_custom_seed_map(
+            args.custom_seeds_csv, schools, year=args.year)
+        seed_map.update(custom_id_seed)
+        seed_name_map.update(custom_name_seed)
 
     stats_year = args.year + int(score_payload["config"]["stats_year_offset"])
     if args.all_games_csv:
@@ -261,9 +279,14 @@ if __name__ == "__main__":
             seed = seed_name_map.get((args.year, normalize_name(team_name)))
         return seed if seed is not None else 20
 
+    bracket_teams = set(flatten(bracket))
     seed_map_resolved = {
-        (args.year, school_ids[t]): resolved_seed(t) for t in set(flatten(bracket))
+        (args.year, school_ids[t]): resolved_seed(t) for t in bracket_teams
     }
+    missing_seed_teams = sorted([
+        t for t in bracket_teams
+        if seed_map_resolved[(args.year, school_ids[t])] == 20
+    ])
 
     champion = simulate_pick(
         bracket, 1, rows, stats, school_ids, seed_map_resolved, args.year,
@@ -279,13 +302,10 @@ if __name__ == "__main__":
         writer.writerows(rows)
     print("Champion pick: %s" % champion)
     print("Wrote pick sheet: %s" % args.out_csv)
-    presets = {
-        "safe": {"upset_bias": 0.0, "upset_threshold": 1.0, "min_underdog_win_prob": 0.0},
-        "balanced": {"upset_bias": 0.05, "upset_threshold": 0.40, "min_underdog_win_prob": 0.35},
-        "chaos": {"upset_bias": 0.10, "upset_threshold": 0.35, "min_underdog_win_prob": 0.30},
-    }
-    if args.pick_style != "custom":
-        p = presets[args.pick_style]
-        args.upset_bias = p["upset_bias"]
-        args.upset_threshold = p["upset_threshold"]
-        args.min_underdog_win_prob = p["min_underdog_win_prob"]
+    print(
+        "Policy: style=%s bias=%.2f threshold=%.2f min_dog=%.2f" % (
+            args.pick_style, args.upset_bias, args.upset_threshold, args.min_underdog_win_prob))
+    if missing_seed_teams:
+        print(
+            "Seed fallback used for %s teams (default 20). Example: %s" % (
+                len(missing_seed_teams), ", ".join(missing_seed_teams[:8])))

@@ -7,16 +7,6 @@
       "missing_team_count": 0,
       "missing_team_ids": [],
       "season": 2008,
-      "season_team_count": 1053,
-      "stats_year": 2007
-    },
-    {
-      "coverage": 1.0,
-      "kaggle_team_count": 65,
-      "mapped_team_count": 65,
-      "missing_team_count": 0,
-      "missing_team_ids": [],
-      "season": 2009,
       "season_team_count": 1052,
       "stats_year": 2008
     },
@@ -26,17 +16,17 @@
       "mapped_team_count": 65,
       "missing_team_count": 0,
       "missing_team_ids": [],
-      "season": 2010,
+      "season": 2009,
       "season_team_count": 1061,
       "stats_year": 2009
     },
     {
       "coverage": 1.0,
-      "kaggle_team_count": 68,
-      "mapped_team_count": 67,
+      "kaggle_team_count": 65,
+      "mapped_team_count": 65,
       "missing_team_count": 0,
       "missing_team_ids": [],
-      "season": 2011,
+      "season": 2010,
       "season_team_count": 1078,
       "stats_year": 2010
     },
@@ -46,9 +36,19 @@
       "mapped_team_count": 67,
       "missing_team_count": 0,
       "missing_team_ids": [],
-      "season": 2012,
+      "season": 2011,
       "season_team_count": 1068,
       "stats_year": 2011
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2012,
+      "season_team_count": 1067,
+      "stats_year": 2012
     },
     {
       "coverage": 1.0,
@@ -57,16 +57,6 @@
       "missing_team_count": 0,
       "missing_team_ids": [],
       "season": 2013,
-      "season_team_count": 1067,
-      "stats_year": 2012
-    },
-    {
-      "coverage": 1.0,
-      "kaggle_team_count": 68,
-      "mapped_team_count": 67,
-      "missing_team_count": 0,
-      "missing_team_ids": [],
-      "season": 2014,
       "season_team_count": 1077,
       "stats_year": 2013
     },
@@ -76,7 +66,7 @@
       "mapped_team_count": 67,
       "missing_team_count": 0,
       "missing_team_ids": [],
-      "season": 2015,
+      "season": 2014,
       "season_team_count": 1084,
       "stats_year": 2014
     },
@@ -86,9 +76,19 @@
       "mapped_team_count": 67,
       "missing_team_count": 0,
       "missing_team_ids": [],
-      "season": 2016,
+      "season": 2015,
       "season_team_count": 1086,
       "stats_year": 2015
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2016,
+      "season_team_count": 1092,
+      "stats_year": 2016
     },
     {
       "coverage": 1.0,
@@ -97,16 +97,6 @@
       "missing_team_count": 0,
       "missing_team_ids": [],
       "season": 2017,
-      "season_team_count": 1092,
-      "stats_year": 2016
-    },
-    {
-      "coverage": 1.0,
-      "kaggle_team_count": 68,
-      "mapped_team_count": 67,
-      "missing_team_count": 0,
-      "missing_team_ids": [],
-      "season": 2018,
       "season_team_count": 1095,
       "stats_year": 2017
     },
@@ -116,25 +106,27 @@
       "mapped_team_count": 67,
       "missing_team_count": 0,
       "missing_team_ids": [],
-      "season": 2019,
+      "season": 2018,
       "season_team_count": 1091,
       "stats_year": 2018
     }
   ],
   "calibration": {
-    "a": 0.15669653087240026,
-    "b": -6.455504318308823e-10,
+    "a": 0.1480499859983664,
+    "b": -2.1821505170820432e-10,
     "method": "platt"
   },
   "config": {
     "all_games_csv": "csv/ncaa_games_all.csv",
+    "cutoff_day": 15,
+    "cutoff_month": 3,
     "kaggle_dir": "external/kaggle_mania",
     "label_source": "MNCAATourneyCompactResults",
     "min_id_coverage": 0.98,
     "ridge_l2": 1.0,
-    "stats_year_offset": -1,
+    "stats_year_offset": 0,
     "test_years": [
-      2019
+      2018
     ],
     "train_years": [
       2008,
@@ -145,14 +137,13 @@
       2013,
       2014,
       2015,
-      2016,
-      2017
+      2016
     ],
     "validation_years": [
-      2018
+      2017
     ]
   },
-  "ensemble_weight": 0.25,
+  "ensemble_weight": 0.55,
   "feature_columns": [
     "a_offense",
     "a_defense",
@@ -173,64 +164,64 @@
   },
   "ridge": {
     "a_coef": [
-      0.21555899543667745,
-      0.11533794081302094,
-      0.11544100923427006,
-      0.12217929237256321,
-      0.0495282648692048,
-      0.2583285456260658,
-      0.09842912834818704,
-      -0.1720107203957338,
-      0.09082679748550651,
-      -0.07851086182168131,
-      0.1480446617119195
+      0.3089904051132222,
+      0.09491713697260679,
+      0.13442998057539873,
+      0.3006788861664063,
+      0.14031277147570204,
+      0.3039904740352839,
+      0.1356515634889796,
+      -0.143350953036105,
+      0.08642029665544688,
+      -0.10701066114264246,
+      0.22065294666932378
     ],
-    "a_intercept": -3.9899099420810558,
+    "a_intercept": -29.235732119414962,
     "b_coef": [
-      0.04954973702025624,
-      0.25832158995305127,
-      0.09841928643418119,
-      -0.17202408204286568,
-      0.2155515367665558,
-      0.11536017382065729,
-      0.1154362026803371,
-      0.12219329859844973,
-      -0.09082248259333585,
-      0.07851169618296248,
-      -0.14804724312735815
+      0.14028241996326712,
+      0.3039915663671029,
+      0.1356558316740108,
+      -0.14332564694384703,
+      0.3089820243465768,
+      0.09494119483143698,
+      0.13443250239278687,
+      0.3006855306382983,
+      -0.08640737923570646,
+      0.10701846420380202,
+      -0.2206650834340318
     ],
-    "b_intercept": -3.98990961067463
+    "b_intercept": -29.235732062842104
   },
   "test_metrics": {
     "baseline": {
-      "score_mae": 9.072679930466872,
-      "winner_accuracy": 0.7076923076923077
+      "score_mae": 9.272810560284238,
+      "winner_accuracy": 0.6363636363636364
     },
     "ensemble": {
-      "brier": 0.199552730708063,
-      "log_loss": 0.5874763218712195,
-      "score_mae": 9.001681103267366,
-      "winner_accuracy": 0.7076923076923077
+      "brier": 0.22385803583970038,
+      "log_loss": 0.6397363523023081,
+      "score_mae": 9.158736448090988,
+      "winner_accuracy": 0.6363636363636364
     },
     "ridge": {
-      "score_mae": 8.894067590018556,
-      "winner_accuracy": 0.6923076923076923
+      "score_mae": 9.156163454895466,
+      "winner_accuracy": 0.6363636363636364
     }
   },
   "validation_metrics": {
     "baseline": {
-      "score_mae": 9.736992835998535,
-      "winner_accuracy": 0.6515151515151515
+      "score_mae": 8.045413230782124,
+      "winner_accuracy": 0.6417910447761194
     },
     "ensemble": {
-      "brier": 0.2196444902674649,
-      "log_loss": 0.6295440740926219,
-      "score_mae": 9.71272789227445,
-      "winner_accuracy": 0.6666666666666666
+      "brier": 0.21086266498439296,
+      "log_loss": 0.6037760605330548,
+      "score_mae": 7.916513863843435,
+      "winner_accuracy": 0.6417910447761194
     },
     "ridge": {
-      "score_mae": 9.789776766976292,
-      "winner_accuracy": 0.6818181818181818
+      "score_mae": 8.037193273815712,
+      "winner_accuracy": 0.6567164179104478
     }
   }
 }
