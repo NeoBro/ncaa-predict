@@ -1,0 +1,225 @@
+{
+  "alignment_report": [
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 65,
+      "mapped_team_count": 65,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2008,
+      "season_team_count": 1053,
+      "stats_year": 2007
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 65,
+      "mapped_team_count": 65,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2009,
+      "season_team_count": 1052,
+      "stats_year": 2008
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 65,
+      "mapped_team_count": 65,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2010,
+      "season_team_count": 1061,
+      "stats_year": 2009
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2011,
+      "season_team_count": 1078,
+      "stats_year": 2010
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2012,
+      "season_team_count": 1068,
+      "stats_year": 2011
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 66,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2013,
+      "season_team_count": 1067,
+      "stats_year": 2012
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2014,
+      "season_team_count": 1077,
+      "stats_year": 2013
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2015,
+      "season_team_count": 1084,
+      "stats_year": 2014
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2016,
+      "season_team_count": 1086,
+      "stats_year": 2015
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 68,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2017,
+      "season_team_count": 1092,
+      "stats_year": 2016
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2018,
+      "season_team_count": 1095,
+      "stats_year": 2017
+    }
+  ],
+  "calibration": {
+    "a": 0.212221886147618,
+    "b": -5.129781148567134e-09,
+    "method": "platt"
+  },
+  "config": {
+    "all_games_csv": "csv/ncaa_games_all.csv",
+    "kaggle_dir": "external/kaggle_mania",
+    "label_source": "MNCAATourneyCompactResults",
+    "min_id_coverage": 0.98,
+    "ridge_l2": 1.0,
+    "stats_year_offset": -1,
+    "test_years": [
+      2018
+    ],
+    "train_years": [
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016
+    ],
+    "validation_years": [
+      2017
+    ]
+  },
+  "ensemble_weight": 1.0,
+  "feature_columns": [
+    "a_offense",
+    "a_defense",
+    "a_total",
+    "a_margin",
+    "b_offense",
+    "b_defense",
+    "b_total",
+    "b_margin",
+    "offense_diff",
+    "defense_diff",
+    "margin_diff"
+  ],
+  "mapping_summary": {
+    "ambiguous_count": 0,
+    "mapped_count": 362,
+    "unresolved_count": 16
+  },
+  "ridge": {
+    "a_coef": [
+      0.2140162289190572,
+      0.08528631307134359,
+      0.10681279206251611,
+      0.14524163000837612,
+      0.053307989932449805,
+      0.23667875197240132,
+      0.09335520596035185,
+      -0.14396209381873867,
+      0.08325726545240135,
+      -0.07851157075064896,
+      0.14407385115729698
+    ],
+    "a_intercept": 0.5762057329034604,
+    "b_coef": [
+      0.0533073118757436,
+      0.23666102623559493,
+      0.09336229189584469,
+      -0.1439606265721048,
+      0.21399693170089737,
+      0.0853104464293463,
+      0.1068124859714572,
+      0.14525335077770007,
+      -0.08326114481392645,
+      0.0785196714904648,
+      -0.1440778499379041
+    ],
+    "b_intercept": 0.5762063065349565
+  },
+  "test_metrics": {
+    "baseline": {
+      "score_mae": 9.736992835998535,
+      "winner_accuracy": 0.6515151515151515
+    },
+    "ensemble": {
+      "brier": 0.2311306949600423,
+      "log_loss": 0.6740557003315121,
+      "score_mae": 9.717932047713138,
+      "winner_accuracy": 0.6818181818181818
+    },
+    "ridge": {
+      "score_mae": 9.717932047713138,
+      "winner_accuracy": 0.6818181818181818
+    }
+  },
+  "validation_metrics": {
+    "baseline": {
+      "score_mae": 7.853869708616342,
+      "winner_accuracy": 0.6865671641791045
+    },
+    "ensemble": {
+      "brier": 0.19043957920489632,
+      "log_loss": 0.5604300293471677,
+      "score_mae": 7.709733280334158,
+      "winner_accuracy": 0.6865671641791045
+    },
+    "ridge": {
+      "score_mae": 7.709733280334158,
+      "winner_accuracy": 0.6865671641791045
+    }
+  }
+}

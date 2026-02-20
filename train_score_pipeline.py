@@ -9,6 +9,7 @@ from ncaa_predict.score_pipeline import (
     build_score_dataset,
     choose_ensemble_weight,
     evaluate_models,
+    fit_platt_scaler,
     fit_ridge_regression,
     save_pipeline,
 )
@@ -36,6 +37,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--ridge-l2", default=1.0, type=float,
         help="L2 penalty for ridge score regressors. (default: %(default)s)")
+    parser.add_argument(
+        "--max-bad-ratio", default=0.06, type=float,
+        help="QC threshold for dropped/missing game rows when building score "
+             "datasets. (default: %(default)s)")
     parser.add_argument(
         "--model-out", "-o", required=True,
         help="Output path for pipeline JSON.")
@@ -75,26 +80,45 @@ if __name__ == "__main__":
                     (max(args.validation_years), min(args.test_years)))
 
     x_train, y_a_train, y_b_train, _ = build_score_dataset(
-        args.train_years, stats_year_offset=args.stats_year_offset)
+        args.train_years,
+        stats_year_offset=args.stats_year_offset,
+        max_bad_ratio=args.max_bad_ratio)
     x_val, y_a_val, y_b_val, _ = build_score_dataset(
-        args.validation_years, stats_year_offset=args.stats_year_offset)
+        args.validation_years,
+        stats_year_offset=args.stats_year_offset,
+        max_bad_ratio=args.max_bad_ratio)
 
     model_a = fit_ridge_regression(x_train, y_a_train, l2=args.ridge_l2)
     model_b = fit_ridge_regression(x_train, y_b_train, l2=args.ridge_l2)
     ensemble_weight = choose_ensemble_weight(
         x_val, y_a_val, y_b_val, model_a, model_b)
+    val_base_a, val_base_b = ((0.5 * (x_val[:, 0] + x_val[:, 5])),
+                              (0.5 * (x_val[:, 4] + x_val[:, 1])))
+    val_ridge_a = model_a.predict(x_val)
+    val_ridge_b = model_b.predict(x_val)
+    val_ens_diff = (
+        (ensemble_weight * val_ridge_a) + ((1 - ensemble_weight) * val_base_a)
+    ) - (
+        (ensemble_weight * val_ridge_b) + ((1 - ensemble_weight) * val_base_b)
+    )
+    y_val_win = (y_a_val > y_b_val).astype(np.float32)
+    cal_a, cal_b = fit_platt_scaler(val_ens_diff, y_val_win)
 
     val_metrics, _, _ = evaluate_models(
-        x_val, y_a_val, y_b_val, model_a, model_b, ensemble_weight)
+        x_val, y_a_val, y_b_val, model_a, model_b, ensemble_weight,
+        calibration={"a": cal_a, "b": cal_b})
     print("Validation metrics:")
     print(val_metrics)
 
     test_metrics = {}
     if args.test_years:
         x_test, y_a_test, y_b_test, _ = build_score_dataset(
-            args.test_years, stats_year_offset=args.stats_year_offset)
+            args.test_years,
+            stats_year_offset=args.stats_year_offset,
+            max_bad_ratio=args.max_bad_ratio)
         test_metrics, _, _ = evaluate_models(
-            x_test, y_a_test, y_b_test, model_a, model_b, ensemble_weight)
+            x_test, y_a_test, y_b_test, model_a, model_b, ensemble_weight,
+            calibration={"a": cal_a, "b": cal_b})
         print("Test metrics:")
         print(test_metrics)
 
@@ -108,6 +132,7 @@ if __name__ == "__main__":
             "test_years": args.test_years,
             "stats_year_offset": args.stats_year_offset,
             "ridge_l2": args.ridge_l2,
+            "max_bad_ratio": args.max_bad_ratio,
         },
         "feature_columns": FEATURE_COLUMNS,
         "ensemble_weight": ensemble_weight,
@@ -122,6 +147,11 @@ if __name__ == "__main__":
         "residual_std": {
             "score_a": float(np.std(y_a_val - model_a.predict(x_val))),
             "score_b": float(np.std(y_b_val - model_b.predict(x_val))),
+        },
+        "calibration": {
+            "method": "platt",
+            "a": cal_a,
+            "b": cal_b,
         },
     }
     save_pipeline(args.model_out, payload)

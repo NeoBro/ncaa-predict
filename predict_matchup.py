@@ -6,6 +6,7 @@ from ncaa_predict.score_pipeline import (
     baseline_predict_scores,
     load_pipeline,
     matchup_features,
+    platt_predict,
 )
 
 
@@ -35,12 +36,17 @@ if __name__ == "__main__":
     ens_a = (w * ridge_a) + ((1 - w) * base_a)
     ens_b = (w * ridge_b) + ((1 - w) * base_b)
 
-    diff_std = max(
-        1e-6,
-        math.sqrt(
-            (float(payload["residual_std"]["score_a"]) ** 2) +
-            (float(payload["residual_std"]["score_b"]) ** 2)))
-    win_prob_a = normal_cdf((ens_a - ens_b) / diff_std)
+    if "calibration" in payload:
+        cal = payload["calibration"]
+        win_prob_a = float(platt_predict(
+            ens_a - ens_b, float(cal["a"]), float(cal["b"])))
+    else:
+        diff_std = max(
+            1e-6,
+            math.sqrt(
+                (float(payload["residual_std"]["score_a"]) ** 2) +
+                (float(payload["residual_std"]["score_b"]) ** 2)))
+        win_prob_a = normal_cdf((ens_a - ens_b) / diff_std)
 
     print("Using stats year: %s" % stats_year)
     print("Baseline score: %s %.1f - %s %.1f" %

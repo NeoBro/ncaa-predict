@@ -1,0 +1,112 @@
+[
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 65,
+    "mapped_team_count": 65,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2008,
+    "season_team_count": 1053,
+    "stats_year": 2007
+  },
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 65,
+    "mapped_team_count": 65,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2009,
+    "season_team_count": 1052,
+    "stats_year": 2008
+  },
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 65,
+    "mapped_team_count": 65,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2010,
+    "season_team_count": 1061,
+    "stats_year": 2009
+  },
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 68,
+    "mapped_team_count": 67,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2011,
+    "season_team_count": 1078,
+    "stats_year": 2010
+  },
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 68,
+    "mapped_team_count": 67,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2012,
+    "season_team_count": 1068,
+    "stats_year": 2011
+  },
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 68,
+    "mapped_team_count": 66,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2013,
+    "season_team_count": 1067,
+    "stats_year": 2012
+  },
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 68,
+    "mapped_team_count": 67,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2014,
+    "season_team_count": 1077,
+    "stats_year": 2013
+  },
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 68,
+    "mapped_team_count": 67,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2015,
+    "season_team_count": 1084,
+    "stats_year": 2014
+  },
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 68,
+    "mapped_team_count": 67,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2016,
+    "season_team_count": 1086,
+    "stats_year": 2015
+  },
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 68,
+    "mapped_team_count": 68,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2017,
+    "season_team_count": 1092,
+    "stats_year": 2016
+  },
+  {
+    "coverage": 1.0,
+    "kaggle_team_count": 68,
+    "mapped_team_count": 67,
+    "missing_team_count": 0,
+    "missing_team_ids": [],
+    "season": 2018,
+    "season_team_count": 1095,
+    "stats_year": 2017
+  }
+]

@@ -123,7 +123,7 @@ easy way to find these is to look through the
 Once you've added your bracket:
 
 ```
-./predict.py -m $YOUR_MODEL -y $YEAR
+./predict.py -m $YOUR_MODEL -y $YEAR --bracket-file brackets/template_2017.json
 ```
 
 By default, `predict.py` uses player stats from `$YEAR - 1`. Override this with
@@ -146,9 +146,114 @@ each line and wait for you to hit enter.
 
 ## Predicting scores
 
-The neural network version of this doesn't really work right now, so
-`./predict_score.py` uses a simpler algorithm based on the model's historical
-scores.
+Use the new leakage-safe score pipeline with an ensemble model:
+
+```
+./train_score_pipeline.py \
+  -y 2008,2009,2010,2011,2012,2013,2014,2015,2016 \
+  -v 2017 -t 2018 \
+  --stats-year-offset -1 \
+  -o models/score_pipeline_legacy.json
+```
+
+Predict a matchup:
+
+```
+./predict_matchup.py -m models/score_pipeline_legacy.json -y 2018 "Duke" "Kansas"
+```
+
+Simulate full bracket outcomes with Monte Carlo (model-only probabilities):
+
+```
+./simulate_bracket.py -m models/score_pipeline_legacy.json -y 2018 -n 10000 \
+  --bracket-file brackets/template_2017.json
+```
+
+This prints champion probabilities and round reach probabilities for top teams.
+
+Bracket input is now external JSON. The repository includes:
+  - `brackets/template_2017.json`
+
+Edit/copy that file each season instead of changing Python code.
+
+Run rolling backtest (accuracy, Brier, log loss, score MAE):
+
+```
+./backtest_score_pipeline.py --start-year 2008 --end-year 2018 --min-train-years 6
+```
+
+This pipeline includes:
+  - Strict year-split leakage guards in training.
+  - Prior-year stats by default (`--stats-year-offset -1`).
+  - Ensemble of baseline and ridge regressors.
+  - Platt-calibrated win probabilities on validation folds.
+
+## Tournament Results Data (Kaggle)
+
+To train/evaluate on NCAA tournament outcomes directly, use Kaggle's
+March Madness files:
+  - `MNCAATourneyCompactResults.csv`
+  - `MNCAATourneySeeds.csv` (optional but recommended)
+
+Fetch these automatically (no Kaggle login needed in this workflow):
+
+```
+./fetch_tourney_data.py -o external/kaggle_mania
+```
+
+This downloads:
+  - `MNCAATourneyCompactResults.csv`
+  - `MNCAATourneySeeds.csv`
+  - `MTeams.csv`
+  - `MTeamSpellings.csv`
+
+Build a merged historical game CSV from your scraped yearly files:
+
+```
+./build_all_games_csv.py -o csv/ncaa_games_all.csv
+```
+
+Validate TeamID alignment before training (recommended):
+
+```
+./validate_tourney_team_ids.py \
+  --kaggle-dir external/kaggle_mania \
+  --all-games-csv csv/ncaa_games_all.csv \
+  -y 2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018 \
+  --stats-year-offset -1 \
+  --min-id-coverage 0.98 \
+  --report-out reports/tourney_id_alignment.json
+```
+
+Train a tournament-only score pipeline (leakage-safe year splits):
+
+```
+./train_tourney_score_pipeline.py \
+  --kaggle-dir external/kaggle_mania \
+  --all-games-csv csv/ncaa_games_all.csv \
+  -y 2008,2009,2010,2011,2012,2013,2014,2015,2016 \
+  -v 2017 -t 2018 \
+  --stats-year-offset -1 \
+  --alignment-report-out reports/tourney_id_alignment_train.json \
+  -o models/tourney_score_pipeline.json
+```
+
+This uses tournament games as labels and your season game stats as features.
+Tournament feature rows are built in both matchup directions to avoid
+winner-first label leakage from Kaggle compact results.
+
+Run rolling tournament backtest across years:
+
+```
+./backtest_tourney_score_pipeline.py \
+  --kaggle-dir external/kaggle_mania \
+  --all-games-csv csv/ncaa_games_all.csv \
+  --start-year 2008 --end-year 2018 \
+  --min-train-years 6 \
+  --stats-year-offset -1 \
+  --min-id-coverage 0.98 \
+  --report-out reports/tourney_backtest.json
+```
 
 To run:
 

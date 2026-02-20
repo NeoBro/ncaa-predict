@@ -34,10 +34,21 @@ class RegressionModel:
 
 
 def _team_stats(games):
-    by_team = games.groupby("school_id")
+    left = games[["school_id", "score", "opponent_score"]].rename(columns={
+        "school_id": "team_id",
+        "score": "team_score",
+        "opponent_score": "opp_score",
+    })
+    right = games[["opponent_id", "opponent_score", "score"]].rename(columns={
+        "opponent_id": "team_id",
+        "opponent_score": "team_score",
+        "score": "opp_score",
+    })
+    team_games = pd.concat([left, right], ignore_index=True)
+    by_team = team_games.groupby("team_id")
     stats = pd.DataFrame({
-        "offense": by_team["score"].mean(),
-        "defense": by_team["opponent_score"].mean(),
+        "offense": by_team["team_score"].mean(),
+        "defense": by_team["opp_score"].mean(),
     })
     stats["total"] = stats["offense"] + stats["defense"]
     stats["margin"] = stats["offense"] - stats["defense"]
@@ -60,15 +71,15 @@ def _feature_row(team_a_stats, team_b_stats):
     ], dtype=np.float32)
 
 
-def build_score_dataset(game_years, stats_year_offset=-1):
+def build_score_dataset(game_years, stats_year_offset=-1, max_bad_ratio=0.06):
     feature_rows = []
     y_a = []
     y_b = []
     meta = []
     for game_year in game_years:
-        games = load_ncaa_games(game_year)
+        games = load_ncaa_games(game_year, max_bad_ratio=max_bad_ratio)
         stats_year = game_year + stats_year_offset
-        stats_games = load_ncaa_games(stats_year)
+        stats_games = load_ncaa_games(stats_year, max_bad_ratio=max_bad_ratio)
         stats = _team_stats(stats_games)
         usable = 0
         for game in games.itertuples():
@@ -117,12 +128,50 @@ def _mae(y_true, y_pred):
     return float(np.mean(np.abs(y_true - y_pred)))
 
 
-def evaluate_models(x, y_a, y_b, model_a, model_b, ensemble_weight):
+def _sigmoid(z):
+    z = np.clip(z, -50, 50)
+    return 1.0 / (1.0 + np.exp(-z))
+
+
+def fit_platt_scaler(score_diff, y_true, steps=800, lr=0.01):
+    a = 0.0
+    b = 0.0
+    for _ in range(steps):
+        logits = (a * score_diff) + b
+        p = _sigmoid(logits)
+        err = p - y_true
+        grad_a = np.mean(err * score_diff)
+        grad_b = np.mean(err)
+        a -= lr * grad_a
+        b -= lr * grad_b
+    return float(a), float(b)
+
+
+def platt_predict(score_diff, a, b):
+    return _sigmoid((a * score_diff) + b)
+
+
+def brier_score(y_true, p):
+    return float(np.mean((y_true - p) ** 2))
+
+
+def log_loss(y_true, p):
+    p = np.clip(p, 1e-8, 1 - 1e-8)
+    return float(-np.mean((y_true * np.log(p)) + ((1 - y_true) * np.log(1 - p))))
+
+
+def evaluate_models(x, y_a, y_b, model_a, model_b, ensemble_weight, calibration=None):
     ridge_a = model_a.predict(x)
     ridge_b = model_b.predict(x)
     base_a, base_b = baseline_predict_scores(x)
     ens_a = (ensemble_weight * ridge_a) + ((1 - ensemble_weight) * base_a)
     ens_b = (ensemble_weight * ridge_b) + ((1 - ensemble_weight) * base_b)
+    true_win = (y_a > y_b).astype(np.float32)
+    diff = ens_a - ens_b
+    if calibration is not None:
+        p_win = platt_predict(diff, calibration["a"], calibration["b"])
+    else:
+        p_win = _sigmoid(diff / np.std(diff))
 
     results = {
         "baseline": {
@@ -136,6 +185,8 @@ def evaluate_models(x, y_a, y_b, model_a, model_b, ensemble_weight):
         "ensemble": {
             "score_mae": (_mae(y_a, ens_a) + _mae(y_b, ens_b)) / 2,
             "winner_accuracy": winner_accuracy(y_a, y_b, ens_a, ens_b),
+            "brier": brier_score(true_win, p_win),
+            "log_loss": log_loss(true_win, p_win),
         },
     }
     return results, ens_a, ens_b

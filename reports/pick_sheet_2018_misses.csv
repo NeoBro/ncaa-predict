@@ -1,0 +1,16 @@
+actual_winner,actual_loser,pred_pick,correct,actual_upset
+St. Bonaventure,UCLA,UCLA,False,False
+Texas Southern,N.C. Central,N.C. Central,False,False
+Alabama,Virginia Tech,Virginia Tech,False,True
+Buffalo,Arizona,Arizona,False,True
+Loyola Chicago,Miami (FL),Miami (FL),False,True
+Butler,Arkansas,Arkansas,False,True
+Kansas St.,Creighton,Creighton,False,True
+Marshall,Wichita St.,Wichita St.,False,True
+Syracuse,TCU,TCU,False,True
+UMBC,Virginia,Virginia,False,True
+Clemson,Auburn,Auburn,False,True
+Florida St.,Xavier,Xavier,False,True
+Nevada,Cincinnati,Cincinnati,False,True
+Texas A&M,North Carolina,North Carolina,False,True
+Texas Tech,Purdue,Purdue,False,True

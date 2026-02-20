@@ -1,0 +1,125 @@
+{
+  "alignment_report": [
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 65,
+      "mapped_team_count": 65,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2008,
+      "season_team_count": 1053,
+      "stats_year": 2007
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 65,
+      "mapped_team_count": 65,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2009,
+      "season_team_count": 1052,
+      "stats_year": 2008
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 65,
+      "mapped_team_count": 65,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2010,
+      "season_team_count": 1061,
+      "stats_year": 2009
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2011,
+      "season_team_count": 1078,
+      "stats_year": 2010
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2012,
+      "season_team_count": 1068,
+      "stats_year": 2011
+    }
+  ],
+  "config": {
+    "all_games_csv": "csv/ncaa_games_all.csv",
+    "end_year": 2012,
+    "kaggle_dir": "external/kaggle_mania",
+    "min_id_coverage": 0.98,
+    "min_train_years": 2,
+    "ridge_l2": 1.0,
+    "start_year": 2008,
+    "stats_year_offset": -1
+  },
+  "fold_results": [
+    {
+      "ensemble_weight": 1.0,
+      "test_metrics": {
+        "brier": 0.25491616402076894,
+        "log_loss": 0.7211250657555854,
+        "score_mae": 8.055114988313171,
+        "winner_accuracy": 0.6212121212121212
+      },
+      "test_year": 2011,
+      "train_years": [
+        2008,
+        2009
+      ],
+      "validation_metrics": {
+        "brier": 0.2203625499302342,
+        "log_loss": 0.6287548361828288,
+        "score_mae": 9.030682478289663,
+        "winner_accuracy": 0.609375
+      },
+      "validation_year": 2010
+    },
+    {
+      "ensemble_weight": 0.55,
+      "test_metrics": {
+        "brier": 0.23488387475428674,
+        "log_loss": 0.6628935539515576,
+        "score_mae": 7.733041522247275,
+        "winner_accuracy": 0.6060606060606061
+      },
+      "test_year": 2012,
+      "train_years": [
+        2008,
+        2009,
+        2010
+      ],
+      "validation_metrics": {
+        "brier": 0.2370617904218907,
+        "log_loss": 0.6667773232265246,
+        "score_mae": 7.917415158539743,
+        "winner_accuracy": 0.6212121212121212
+      },
+      "validation_year": 2011
+    }
+  ],
+  "mapping_summary": {
+    "ambiguous_count": 0,
+    "mapped_count": 362,
+    "unresolved_count": 16
+  },
+  "summary": {
+    "accuracy_mean": 0.6136363636363636,
+    "accuracy_std": 0.007575757575757569,
+    "brier_mean": 0.24490001938752784,
+    "brier_std": 0.010016144633241103,
+    "folds": 2,
+    "log_loss_mean": 0.6920093098535716,
+    "log_loss_std": 0.02911575590201393,
+    "score_mae_mean": 7.894078255280223,
+    "score_mae_std": 0.1610367330329483
+  }
+}

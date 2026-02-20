@@ -1,0 +1,187 @@
+{
+  "alignment_report": [
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 65,
+      "mapped_team_count": 65,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2008,
+      "season_team_count": 1053,
+      "stats_year": 2007
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 65,
+      "mapped_team_count": 65,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2009,
+      "season_team_count": 1052,
+      "stats_year": 2008
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 65,
+      "mapped_team_count": 65,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2010,
+      "season_team_count": 1061,
+      "stats_year": 2009
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2011,
+      "season_team_count": 1078,
+      "stats_year": 2010
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2012,
+      "season_team_count": 1068,
+      "stats_year": 2011
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 66,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2013,
+      "season_team_count": 1067,
+      "stats_year": 2012
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2014,
+      "season_team_count": 1077,
+      "stats_year": 2013
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2015,
+      "season_team_count": 1084,
+      "stats_year": 2014
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2016,
+      "season_team_count": 1086,
+      "stats_year": 2015
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 68,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2017,
+      "season_team_count": 1092,
+      "stats_year": 2016
+    },
+    {
+      "coverage": 1.0,
+      "kaggle_team_count": 68,
+      "mapped_team_count": 67,
+      "missing_team_count": 0,
+      "missing_team_ids": [],
+      "season": 2018,
+      "season_team_count": 1095,
+      "stats_year": 2017
+    }
+  ],
+  "ambiguous_examples": {},
+  "mapping_summary": {
+    "ambiguous_count": 0,
+    "mapped_count": 362,
+    "unresolved_count": 16
+  },
+  "unresolved_examples": {
+    "1107": [
+      "albany",
+      "albany ny",
+      "suny albany"
+    ],
+    "1109": [
+      "alliant international",
+      "alliant intl"
+    ],
+    "1111": [
+      "appalachian st"
+    ],
+    "1192": [
+      "f dickinson",
+      "fairleigh dickinson"
+    ],
+    "1223": [
+      "houston bap",
+      "houston baptist",
+      "houston chr"
+    ],
+    "1230": [
+      "incarnate word"
+    ],
+    "1237": [
+      "indiana purdue",
+      "iupui"
+    ],
+    "1254": [
+      "liu brooklyn",
+      "long island",
+      "long island u"
+    ],
+    "1258": [
+      "loy marymount",
+      "loyola marymount"
+    ],
+    "1282": [
+      "missouri kansas city",
+      "missouri kc",
+      "mo kansas city",
+      "umkc"
+    ],
+    "1296": [
+      "n illinois",
+      "northern ill",
+      "northern illinois"
+    ],
+    "1302": [
+      "ne illinois",
+      "northeastern illinois"
+    ],
+    "1384": [
+      "st francis pa"
+    ],
+    "1446": [
+      "w texas a m",
+      "west texas a m"
+    ],
+    "1475": [
+      "southern indiana"
+    ],
+    "1477": [
+      "tx a m commerce"
+    ]
+  }
+}

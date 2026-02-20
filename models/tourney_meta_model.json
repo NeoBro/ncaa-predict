@@ -1,0 +1,95 @@
+{
+  "config": {
+    "all_games_csv": "csv/ncaa_games_all.csv",
+    "kaggle_dir": "external/kaggle_mania",
+    "l2": 1.0,
+    "score_model_in": "models/tourney_score_pipeline.json",
+    "stats_year_offset": -1,
+    "test_years": [
+      2018
+    ],
+    "train_years": [
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016
+    ],
+    "validation_years": [
+      2017
+    ]
+  },
+  "features": {
+    "upset": [
+      "fav_score_win_prob",
+      "fav_score_margin",
+      "fav_margin_abs",
+      "fav_seed",
+      "dog_seed",
+      "seed_gap"
+    ],
+    "win": [
+      "score_win_prob_a",
+      "score_margin",
+      "score_margin_abs",
+      "seed_a",
+      "seed_b",
+      "seed_diff"
+    ]
+  },
+  "mapping_summary": {
+    "ambiguous_count": 0,
+    "mapped_count": 362,
+    "unresolved_count": 16
+  },
+  "test_metrics": {
+    "upset": {
+      "accuracy": 0.6935483870967742,
+      "brier": 0.20074476591586216,
+      "log_loss": 0.5891371506126868
+    },
+    "win": {
+      "accuracy": 0.6818181818181818,
+      "brier": 0.20203873539410364,
+      "log_loss": 0.5905932100311713
+    }
+  },
+  "upset_model": {
+    "coef": [
+      -0.002944709254568344,
+      -0.049237979432729624,
+      -0.030635993926095742,
+      0.038560278834462294,
+      -0.02572989063040491,
+      -0.06429016946486721
+    ],
+    "intercept": -0.17103598885713583
+  },
+  "validation_metrics": {
+    "upset": {
+      "accuracy": 0.7741935483870968,
+      "brier": 0.16713592657788243,
+      "log_loss": 0.5062041198749045
+    },
+    "win": {
+      "accuracy": 0.7164179104477612,
+      "brier": 0.17315845561379006,
+      "log_loss": 0.5186648827542665
+    }
+  },
+  "win_model": {
+    "coef": [
+      0.002931578671773445,
+      0.0546787884115414,
+      -5.659017104595857e-07,
+      -0.040185979908827586,
+      0.040184821665791334,
+      0.08037080157461896
+    ],
+    "intercept": -0.0014529040768350614
+  }
+}
