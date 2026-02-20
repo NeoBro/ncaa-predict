@@ -122,10 +122,16 @@ if __name__ == "__main__":
     parser.add_argument("--model-in", "-m", required=True)
     parser.add_argument("--year", "-y", default=2017, type=int)
     parser.add_argument(
+        "--player-year", default=None, type=int,
+        help="Year of player stats to use. Defaults to year-1.")
+    parser.add_argument(
         "--wait", "-w", default=False, action="store_const", const=True)
     args = parser.parse_args()
 
-    players = load_ncaa_players(args.year)
+    player_year = args.player_year if args.player_year is not None else args.year - 1
+    print("Using player stats from year %s for bracket year %s" % (
+        player_year, args.year))
+    players = load_ncaa_players(player_year)
     all_teams = load_ncaa_schools()
 
     model = keras.models.load_model(args.model_in)

@@ -1,43 +1,20 @@
 #!/usr/bin/env python3
 import argparse
-import sys
 
 import keras
+import numpy as np
+from keras.layers import Conv2D, Dense, Flatten
 from keras.models import Sequential
-from keras.layers import Conv2D, Dense, Flatten, Reshape
 
-from ncaa_predict.data_loader import load_data_multiyear, \
-    N_PLAYERS, N_FEATURES
+from ncaa_predict.data_loader import N_FEATURES, N_PLAYERS, load_data, load_data_multiyear
 from ncaa_predict.util import list_arg
 
 
-DEFAULT_BATCH_SIZE = 1000
-DEFAULT_STEPS = sys.maxsize
+DEFAULT_BATCH_SIZE = 512
+DEFAULT_EPOCHS = 20
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--batch_size", "-b", default=DEFAULT_BATCH_SIZE, type=int,
-        help="The training batch size. Smaller numbers will train faster but "
-        "may not converge. (default: %(default)s)")
-    parser.add_argument(
-        "--model-out", "-o", default=None,
-        help="File to save the model to. This will be an entire Keras model, "
-        "which can be loaded and used without needing to keep track of the "
-        "architecture. Warning: Keras will overwrite existing models. "
-        "(default: don't save)")
-    parser.add_argument(
-        "--steps", "-s", default=DEFAULT_STEPS, type=int,
-        help="The maximum number of training steps. Note that you can stop "
-        "training at any time and save the output with ctrl+c. (default: "
-        "%(default)s)")
-    parser.add_argument(
-        "--train-years", "-y", default=list(range(2002, 2017)),
-        type=list_arg(type=int, container=frozenset),
-        help="A comma-separated list of years to train on.")
-    args = parser.parse_args()
-
+def build_model():
     model = Sequential([
         Conv2D(
             10, (2, N_PLAYERS), strides=(1, N_PLAYERS), activation="relu",
@@ -49,21 +26,87 @@ if __name__ == "__main__":
         Dense(2, activation="softmax"),
     ])
     model.compile(
-        loss="categorical_crossentropy", optimizer="adagrad",
+        loss="categorical_crossentropy",
+        optimizer="adagrad",
         metrics=["accuracy"])
+    return model
 
-    features, labels = load_data_multiyear(args.train_years)
-    try:
-        model.fit(
-            x=features, y=labels,
-            batch_size=args.batch_size, epochs=args.steps // args.batch_size,
-            shuffle=True, validation_split=0.1)
-    except KeyboardInterrupt:
-        print("Stopped training due to keyboard interrupt")
+
+def evaluate_year(model, year, label, player_year_offset):
+    features, labels = load_data(year, player_year_offset=player_year_offset)
+    loss, accuracy = model.evaluate(x=features, y=labels, verbose=0)
+    print("%s %s: loss=%.5f accuracy=%.5f games=%s" %
+          (label, year, loss, accuracy, len(features)))
+    return loss, accuracy
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--batch-size", "-b", default=DEFAULT_BATCH_SIZE, type=int,
+        help="Training batch size. (default: %(default)s)")
+    parser.add_argument(
+        "--epochs", "-e", default=DEFAULT_EPOCHS, type=int,
+        help="Number of training epochs. (default: %(default)s)")
+    parser.add_argument(
+        "--model-out", "-o", default=None,
+        help="Output path for saved Keras model.")
+    parser.add_argument(
+        "--train-years", "-y", required=True,
+        type=list_arg(type=int, container=list),
+        help="Comma-separated years for training.")
+    parser.add_argument(
+        "--validation-years", "-v", required=True,
+        type=list_arg(type=int, container=list),
+        help="Comma-separated years for validation.")
+    parser.add_argument(
+        "--test-years", "-t", default=[],
+        type=list_arg(type=int, container=list),
+        help="Comma-separated years for final test reporting.")
+    parser.add_argument(
+        "--player-year-offset", default=-1, type=int,
+        help="Offset applied to player stats year relative to game year. "
+             "Use -1 to avoid same-season leakage. (default: %(default)s)")
+    args = parser.parse_args()
+
+    overlap = set(args.train_years) & set(args.validation_years)
+    if overlap:
+        raise ValueError("Train/validation overlap is not allowed: %s" % sorted(overlap))
+
+    model = build_model()
+    train_features, train_labels = load_data_multiyear(
+        args.train_years, player_year_offset=args.player_year_offset)
+    val_data = [
+        load_data(year, player_year_offset=args.player_year_offset)
+        for year in args.validation_years
+    ]
+    val_features = np.vstack([features for features, _ in val_data])
+    val_labels = np.vstack([labels for _, labels in val_data])
+
+    history = model.fit(
+        x=train_features,
+        y=train_labels,
+        batch_size=args.batch_size,
+        epochs=args.epochs,
+        shuffle=True,
+        validation_data=(val_features, val_labels),
+        verbose=1)
+
+    best_epoch = int(np.argmax(history.history["val_accuracy"])) + 1
+    best_val_acc = float(np.max(history.history["val_accuracy"]))
+    print("Best validation accuracy: %.5f at epoch %s" % (best_val_acc, best_epoch))
+
+    for year in args.validation_years:
+        evaluate_year(
+            model, year, "Validation",
+            player_year_offset=args.player_year_offset)
+    for year in args.test_years:
+        evaluate_year(
+            model, year, "Test",
+            player_year_offset=args.player_year_offset)
+
     if args.model_out is not None:
         model.save(args.model_out)
 
-    # Workaround for TensorFlow bug:
-    # https://github.com/tensorflow/tensorflow/issues/3388
     import gc
     gc.collect()

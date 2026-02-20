@@ -3,19 +3,16 @@ school_id,school_name
 2,Abilene Christian
 30123,Academy of Art
 929,Adams St.
-506445,Adelbert
 3,Adelphi
 4,Adrian
 11324,Agnes Scott
 721,Air Force
 5,Akron
-10,Ala.-Huntsville
 8,Alabama
 6,Alabama A&M
 7,Alabama St.
 11,Alas. Anchorage
 12,Alas. Fairbanks
-14,Albany (NY)
 13,Albany St. (GA)
 2798,Albertus Magnus
 15,Albion
@@ -26,7 +23,9 @@ school_id,school_name
 30170,Alfred St.
 19,Allegheny
 500120,Allen
+30240,Allen
 500130,Alliance
+1277,Alliance
 506148,Alliant Int'l
 21,Alma
 938,Alvernia
@@ -39,7 +38,7 @@ school_id,school_name
 13028,Anderson (SC)
 25,Angelo St.
 26,Anna Maria
-27,Appalachian St.
+27,App State
 500180,Aquinas
 966,Arcadia
 29,Arizona
@@ -52,7 +51,7 @@ school_id,school_name
 947,Arkansas Tech
 33,Armstrong St.
 725,Army West Point
-506427,Arnold
+30243,Asbury
 506029,Asbury
 35,Ashland
 36,Assumption
@@ -93,8 +92,8 @@ school_id,school_name
 296,Benedictine (IL)
 14770,Bennett
 56,Bentley
-30171,Berea
 506023,Berea
+30171,Berea
 973,Berry
 506014,Bethany (KS)
 59,Bethany (WV)
@@ -104,19 +103,20 @@ school_id,school_name
 500500,Bethel (TN)
 61,Bethune-Cookman
 62,Binghamton
-500515,Biola
 30220,Biola
+500515,Biola
 28593,Birmingham-So.
 506250,Biscayne
-506218,Bishop
+506218,Bishop's (CAN)
 506069,Black Hills St.
 30134,Black Hills St.
 64,Blackburn
 984,Bloomfield
 65,Bloomsburg
-500552,Bluefield Col.
 985,Bluefield St.
+500552,Bluefield Univ.
 987,Bluffton
+30232,Bob Jones
 66,Boise St.
 67,Boston College
 506262,Boston St.
@@ -124,6 +124,7 @@ school_id,school_name
 69,Bowdoin
 70,Bowie St.
 71,Bowling Green
+506316,Boyce
 500598,Bradford
 72,Bradley
 73,Brandeis
@@ -132,7 +133,6 @@ school_id,school_name
 75,Bridgewater (VA)
 76,Bridgewater St.
 506196,British Colum. (CAN)
-78,Brockport
 79,Brooklyn
 80,Brown
 500660,Bryan
@@ -150,15 +150,15 @@ school_id,school_name
 1305,Cairn
 105,Cal Lutheran
 90,Cal Poly
+291,Cal Poly Humboldt
 91,Cal Poly Pomona
 92,Cal St. Dom. Hills
 98,Cal St. East Bay
 97,Cal St. Fullerton
-100,Cal St. L.A.
 506122,Cal St. Monterey Bay
 30055,Cal St. Monterey Bay
-93,Cal St. San B'dino
 30198,Cal St. San Marcos
+100,Cal State LA
 995,Caldwell
 107,California
 106,California (PA)
@@ -168,17 +168,16 @@ school_id,school_name
 996,Cameron
 115,Campbell
 116,Canisius
-506439,Canterbury (IN)
 117,Capital
 500796,Capitol
 118,Carleton
+30253,Carlow
 119,Carnegie Mellon
 506056,Carroll (MT)
 120,Carroll (WI)
 1000,Carson-Newman
 121,Carthage
 506094,Cascade
-123,Castleton
 1001,Catawba
 124,Catholic
 23624,Cazenovia
@@ -194,8 +193,8 @@ school_id,school_name
 129,Central Mich.
 130,Central Mo.
 1009,Central Okla.
-506028,Central St. (OH)
 30049,Central St. (OH)
+506028,Central St. (OH)
 1010,Central Wash.
 132,Centre
 1012,Chadron St.
@@ -208,18 +207,16 @@ school_id,school_name
 693,Chattanooga
 21323,Chestnut Hill
 135,Cheyney
-137,Chicago
 136,Chicago St.
 95,Chico St.
 8875,Chowan
 139,Chris. Newport
-1015,Christian Bros.
+1015,Christian Brothers
 140,Cincinnati
-30087,Cincinnati-Clermont
+30087,Cincinnati Clermont
 8580,City Tech
 30058,Claflin
 500990,Claflin
-506447,Claremont McKenna
 142,Claremont-M-S
 143,Clarion
 145,Clark (MA)
@@ -231,32 +228,27 @@ school_id,school_name
 147,Clemson
 148,Cleveland St.
 722,Coast Guard
-149,Coastal Caro.
-30083,Cobleskill St.
+149,Coastal Carolina
 150,Coe
 1023,Coker
 1014,Col. of Charleston
-506440,Col. of Emporia
 500088,Col. of Idaho
 151,Colby
 152,Colby-Sawyer
 153,Colgate
 11403,Colo. Christian
+155,Colo. Sch. of Mines
 157,Colorado
 154,Colorado Col.
 11416,Colorado Mesa
-155,Colorado Mines
 156,Colorado St.
-2720,Colorado St.-Pueblo
 158,Columbia
 159,Columbus St.
 1028,Concord
-30199,Concordia (CA)
 501120,Concordia (IN)
 501123,Concordia (MI)
 501130,Concordia (MO)
-30112,Concordia (NE)
-506061,Concordia (NE)
+30112,Concordia (Nebraska)
 162,Concordia (NY)
 24400,Concordia (TX)
 160,Concordia Chicago
@@ -270,20 +262,22 @@ school_id,school_name
 165,Coppin St.
 167,Cornell
 166,Cornell College
+168,Cortland
 30111,Covenant
 169,Creighton
 30035,Crown (MN)
 94,CSU Bakersfield
+2720,CSU Pueblo
 101,CSUN
+93,CSUSB
+30199,CUI
 506032,Culver-Stockton
 170,Curry
 122,CWRU
 1059,D'Youville
-506446,D.C. Teachers
 30174,Daemen
 506033,Dakota Wesleyan
 1044,Dallas
-1045,Dallas Baptist
 506005,Dana
 2691,Daniel Webster
 172,Dartmouth
@@ -291,6 +285,8 @@ school_id,school_name
 173,Davidson
 174,Davis & Elkins
 175,Dayton
+1045,DBU
+30219,Dean
 1050,Defiance
 180,Delaware
 178,Delaware St.
@@ -306,8 +302,6 @@ school_id,school_name
 506123,Dickinson St.
 501365,Dillard
 186,Dist. Columbia
-30095,Dixie St.
-506020,Doane
 30082,Doane
 30118,Dominican (CA)
 1332,Dominican (IL)
@@ -325,6 +319,7 @@ school_id,school_name
 8965,East Central
 197,East Stroudsburg
 1062,East Tex. Baptist
+199,East Texas A&M
 203,East. Mennonite
 8968,Eastern
 200,Eastern Conn. St.
@@ -339,6 +334,7 @@ school_id,school_name
 1066,Edgewood
 209,Edinboro
 501555,Edward Waters
+30244,Edward Waters
 506234,Eisenhower
 210,Elizabeth City St.
 211,Elizabethtown
@@ -360,10 +356,10 @@ school_id,school_name
 219,Evansville
 8984,Evergreen St.
 220,Fairfield
-222,Fairleigh Dickinson
 1076,Fairmont St.
 27892,Farmingdale St.
 223,Fayetteville St.
+222,FDU
 221,FDU-Florham
 23157,Felician
 224,Ferris St.
@@ -375,7 +371,7 @@ school_id,school_name
 227,Fitchburg St.
 231,FIU
 229,Fla. Atlantic
-506221,Fla. Gulf Csoast
+506221,Fla. Gulf Coast (non-member)
 501725,Fla. Memorial
 233,Fla. Southern
 30092,Flagler
@@ -388,18 +384,16 @@ school_id,school_name
 9011,Fort Hays St.
 1083,Fort Lewis
 237,Fort Valley St.
-308,Fort Wayne
 238,Framingham St.
 1085,Francis Marion
 30069,Franciscan
-239,Frank. & Marsh.
 2694,Franklin
+239,Franklin & Marshall
 241,Franklin Pierce
 242,Fredonia
-30147,Fresno Pacific
 501818,Fresno Pacific
+30147,Fresno Pacific
 96,Fresno St.
-501826,Friends
 243,Frostburg St.
 244,Furman
 253,Ga. Southern
@@ -438,7 +432,7 @@ school_id,school_name
 264,Grinnell
 265,Grove City
 1112,Guilford
-266,Gust. Adolphus
+266,Gustavus Adolphus
 12399,Gwynedd Mercy
 267,Hamilton
 268,Hamline
@@ -475,11 +469,9 @@ school_id,school_name
 286,Hope
 30160,Houghton
 288,Houston
-287,Houston Baptist
+287,Houston Christian
 290,Howard
-506444,Howard College
 2741,Howard Payne
-291,Humboldt St.
 292,Hunter
 1130,Huntingdon
 502195,Huntington
@@ -487,18 +479,17 @@ school_id,school_name
 502215,Huston-Tillotson
 295,Idaho
 294,Idaho St.
-30172,IIT
 502260,IIT
 502239,Ill. Central
+30050,Ill. Springfield
 300,Ill. Wesleyan
-302,Ill.-Chicago
-30050,Ill.-Springfield
 506079,Ill.-Springfield
 301,Illinois
 297,Illinois Col.
 299,Illinois St.
+30172,Illinois Tech
 303,Immaculata
-2743,Incarnate Word
+0,Independent
 306,Indiana
 307,Indiana (PA)
 305,Indiana St.
@@ -506,26 +497,31 @@ school_id,school_name
 310,Iona
 312,Iowa
 311,Iowa St.
-506037,Iowa Wesleyan
 30173,Iowa Wesleyan
+506037,Iowa Wesleyan
 313,Ithaca
-2699,IUPUI
+2699,IU Indy
 314,Jackson St.
 316,Jacksonville
 315,Jacksonville St.
 317,James Madison
+30267,Jamestown
 506057,Jamestown
 506004,Jarvis Christian
+543,Jefferson
+30262,Jessup
 320,John Carroll
 321,John Jay
 322,Johns Hopkins
-22626,Johnson & Wales (RI)
 323,Johnson C. Smith
-324,Johnson St.
 325,Juniata
+30046,JWU (Denver)
+22626,JWU (Providence)
+30245,JWU Charlotte
 326,Kalamazoo
 506103,Kan. Wesleyan
 328,Kansas
+2707,Kansas City
 327,Kansas St.
 329,Kean
 330,Keene St.
@@ -547,7 +543,6 @@ school_id,school_name
 340,La Salle
 30043,La Sierra
 341,La Verne
-498,La.-Monroe
 342,Lafayette
 1162,LaGrange
 2746,Lake Erie
@@ -562,6 +557,7 @@ school_id,school_name
 30077,Langston
 8486,Lasell
 348,Lawrence
+506404,Lawrence Tech
 349,Le Moyne
 351,Lebanon Valley
 30013,Lee
@@ -570,7 +566,7 @@ school_id,school_name
 279,Lehman
 350,LeMoyne-Owen
 1170,Lenoir-Rhyne
-24317,Lesley 
+24317,Lesley
 8490,LeTourneau
 354,Lewis
 22235,Lewis & Clark
@@ -581,19 +577,19 @@ school_id,school_name
 357,Lincoln (PA)
 30066,Lincoln Christian
 1176,Lincoln Memorial
+30136,Lindenwood
 502725,Lindenwood (MO)
-30136,Lindenwood (MO)
 1179,Linfield
 28600,Lipscomb
 32,Little Rock
-361,LIU Brooklyn
+361,LIU
 362,LIU Post
 359,Livingstone
+370,LMU (CA)
 360,Lock Haven
 99,Long Beach St.
 363,Longwood
 364,Loras
-506442,Los Angeles Pacific
 671,Louisiana
 1182,Louisiana Col.
 366,Louisiana Tech
@@ -601,17 +597,17 @@ school_id,school_name
 502812,Loyola (LA)
 371,Loyola Chicago
 369,Loyola Maryland
-370,Loyola Marymount
 365,LSU
 502787,LSU-Shreveport
 30177,Lubbock Christian
 372,Luther
 373,Lycoming
 374,Lynchburg
-30065,Lyndon St.
 20794,Lynn
+22989,Lyon
 376,Macalester
 377,MacMurray
+506110,Madison College
 380,Maine
 378,Maine Maritime
 30137,Malone
@@ -641,7 +637,7 @@ school_id,school_name
 399,Mass. Maritime
 400,Massachusetts
 773,McDaniel
-503037,McGill
+503037,McGill (CAN)
 503040,McKendree
 30138,McKendree
 486,MCLA
@@ -670,6 +666,7 @@ school_id,school_name
 418,Michigan
 416,Michigan St.
 417,Michigan Tech
+30272,Middle Georgia
 419,Middle Tenn.
 420,Middlebury
 506060,Midland
@@ -697,11 +694,11 @@ school_id,school_name
 435,Missouri S&T
 669,Missouri St.
 506068,Missouri Valley
+9013,Missouri Western
 398,MIT
 30042,Mitchell
 503262,Mo. Baptist
 9012,Mo. Southern St.
-9013,Mo. Western St.
 436,Mo.-St. Louis
 437,Molloy
 439,Monmouth
@@ -719,12 +716,12 @@ school_id,school_name
 447,Morningside
 503365,Morris
 448,Morris Brown
-30067,Morrisville St.
 30036,Mount Aloysius
 449,Mount Holyoke
 27901,Mount Ida
 30033,Mount Mary
 1245,Mount Olive
+450,Mount St. Mary's
 452,Mount Union
 20220,MSOE
 413,MSU Denver
@@ -732,8 +729,6 @@ school_id,school_name
 506043,Mt. Aloysius
 8567,Mt. St. Joseph
 1468,Mt. St. Mary (NY)
-450,Mt. St. Mary's
-451,Mt. St. Vincent
 453,Muhlenberg
 454,Murray St.
 455,Muskingum
@@ -745,6 +740,7 @@ school_id,school_name
 503430,Nasson
 726,Navy
 461,Nazareth
+490,NC State
 462,Neb. Wesleyan
 1156,Neb.-Kearney
 463,Nebraska
@@ -758,17 +754,18 @@ school_id,school_name
 472,New Mexico St.
 474,New Orleans
 476,New Rochelle
+477,New York Tech
 1257,Newberry
 21772,Newbury
 30054,Newman
 482,Niagara
-483,Nicholls St.
+483,Nicholls
 484,Nichols
+503,NIU
 471,NJIT
 485,Norfolk St.
 487,North Ala.
 457,North Carolina
-490,North Carolina St.
 492,North Central (IL)
 30039,North Central (MN)
 494,North Dakota
@@ -784,7 +781,6 @@ school_id,school_name
 12810,Northeastern St.
 501,Northern Ariz.
 502,Northern Colo.
-503,Northern Ill.
 505,Northern Ky.
 506,Northern Mich.
 1266,Northern St.
@@ -793,10 +789,10 @@ school_id,school_name
 1274,Northwest Nazarene
 509,Northwestern
 506072,Northwestern (IA)
-506013,Northwestern Okla.
 30178,Northwestern Okla.
+506013,Northwestern Okla.
 508,Northwestern St.
-30031,Northwestern-St.Paul
+30031,Northwestern-St. Paul
 510,Northwood
 511,Norwich
 513,Notre Dame
@@ -804,11 +800,10 @@ school_id,school_name
 30126,Notre Dame (OH)
 30056,Notre Dame de Namur
 24639,Nova Southeastern
-1277,Nyack
-477,NYIT
 479,NYU
 514,Oakland
 1278,Oakland City
+506086,Oakwood
 515,Oberlin
 516,Occidental
 2713,Oglethorpe
@@ -818,7 +813,7 @@ school_id,school_name
 518,Ohio St.
 15207,Ohio Valley
 520,Ohio Wesleyan
-503895,Okla. Baptist
+503895,Okla. Bapt.
 30202,Okla. Baptist
 30179,Okla. Christian
 24342,Okla. Panhandle
@@ -835,7 +830,7 @@ school_id,school_name
 528,Oregon St.
 500078,Oregon Tech
 530,Oswego St.
-506046,Ottawa
+506046,Ottawa (KS)
 531,Otterbein
 1289,Ouachita Baptist
 23008,Ozarks (AR)
@@ -849,15 +844,17 @@ school_id,school_name
 2751,Pacific (OR)
 1297,Pacific Lutheran
 535,Paine
-504035,Palm Beach Atl.
 30045,Palm Beach Atl.
-504050,Park
+504035,Palm Beach Atl.
+504050,Park (MO)
+1469,Parks College of St. Louis University
 506252,Parsons
 504055,Paul Quinn
 540,Penn
 30190,Penn College
 506288,Penn College
 539,Penn St.
+30189,Penn St. Brandywine
 30081,Penn St. Harrisburg
 30114,Penn St.-Abington
 25719,Penn St.-Altoona
@@ -867,7 +864,6 @@ school_id,school_name
 506235,Pershing
 506008,Peru St.
 542,Pfeiffer
-543,Philadelphia U.
 504115,Philander Smith
 21830,Piedmont
 504135,Pikeville
@@ -881,6 +877,7 @@ school_id,school_name
 548,Plymouth St.
 30149,Point Loma
 30080,Point Park
+30268,Point Park
 500270,Point U.
 481,Polytechnic (NY)
 549,Pomona-Pitzer
@@ -888,6 +885,7 @@ school_id,school_name
 550,Portland St.
 1318,Post
 553,Prairie View
+2715,Pratt
 504205,Pratt
 1320,Presbyterian
 30034,Presentation
@@ -897,8 +895,9 @@ school_id,school_name
 557,Puget Sound
 30029,Purchase
 559,Purdue
+308,Purdue Fort Wayne
+30222,Purdue Northwest
 504255,Purdue Northwest
-506441,Quantico Marines
 11504,Queens (NC)
 560,Queens (NY)
 561,Quincy
@@ -908,6 +907,7 @@ school_id,school_name
 566,Randolph
 565,Randolph-Macon
 567,Redlands
+30264,Regent
 568,Regis (CO)
 569,Regis (MA)
 570,Rensselaer
@@ -924,34 +924,37 @@ school_id,school_name
 18422,Rivier
 578,Roanoke
 579,Robert Morris
-504365,Roberts Wesleyan
 30150,Roberts Wesleyan
+504365,Roberts Wesleyan
 581,Rochester (NY)
-503129,Rochester College
+503129,Rochester Christian
 582,Rockford
 1328,Rockhurst
 506025,Rocky Mountain
 583,Roger Williams
 30180,Rogers St.
 584,Rollins
+2807,Roosevelt
 504410,Roosevelt
 585,Rose-Hulman
 15882,Rosemont
 259,Rowan
+11036,Russell Sage
 586,Rust
 587,Rutgers
 588,Rutgers-Camden
 589,Rutgers-Newark
-11276,S.C. Aiken
 102,Sacramento St.
 590,Sacred Heart
 504446,Sacred Heart (PR)
-11036,Sage Colleges
 591,Saginaw Valley
+593,Saint Anselm
 594,Saint Augustine's
 595,Saint Benedict
-600,Saint Francis (PA)
+9684,Saint Elizabeth
+600,Saint Francis
 602,Saint John's (MN)
+8687,Saint Joseph (CT)
 606,Saint Joseph's
 608,Saint Leo
 609,Saint Louis
@@ -962,12 +965,12 @@ school_id,school_name
 617,Saint Peter's
 1347,Saint Rose
 30064,Saint Vincent
-30041,Salem
-19117,Salem Int'l
+30041,Salem (NC)
+19117,Salem (WV)
 621,Salem St.
 622,Salisbury
 623,Salve Regina
-624,Sam Houston St.
+624,Sam Houston
 625,Samford
 627,San Diego
 502122,San Diego Christian
@@ -984,8 +987,8 @@ school_id,school_name
 634,Seattle Pacific
 1356,Seattle U
 635,Seton Hall
-30063,Seton Hill
 504752,Seton Hill
+30063,Seton Hill
 652,Sewanee
 676,SFA
 636,Shaw
@@ -994,7 +997,6 @@ school_id,school_name
 638,Shippensburg
 30151,Shorter
 504790,Shorter
-506102,Si Tanka
 639,Siena
 640,Simmons
 30127,Simon Fraser
@@ -1006,13 +1008,14 @@ school_id,school_name
 643,Slippery Rock
 644,Smith
 663,SMU
+912,SoCon
 645,Sonoma St.
-646,South Ala.
+646,South Alabama
 648,South Carolina
 647,South Carolina St.
 650,South Dakota
-30139,South Dakota Mines
 506067,South Dakota Mines
+30139,South Dakota Mines
 649,South Dakota St.
 651,South Fla.
 2753,Southampton
@@ -1048,24 +1051,21 @@ school_id,school_name
 26973,Spelman
 505040,Spring Arbor
 506256,Spring Garden
-30191,Spring Hill
 505050,Spring Hill
+30191,Spring Hill
 673,Springfield
 506002,St. Ambrose
 592,St. Andrews
-593,St. Anselm
 506397,St. Bernard
 596,St. Bonaventure
 597,St. Catherine
 598,St. Cloud St.
 1334,St. Edward's
-9684,St. Elizabeth
 1335,St. Francis (IL)
 504500,St. Francis (IN)
 599,St. Francis Brooklyn
 601,St. John Fisher
 603,St. John's (NY)
-8687,St. Joseph (CT)
 30072,St. Joseph's (Brkln)
 604,St. Joseph's (IN)
 1340,St. Joseph's (L.I.)
@@ -1078,12 +1078,12 @@ school_id,school_name
 506108,St. Mary-Plains
 614,St. Norbert
 615,St. Olaf
-506411,St. Paul's
 616,St. Paul's
-506257,St. Procopius
+506411,St. Paul's
 618,St. Scholastica
 30091,St. Thomas (FL)
 620,St. Thomas (MN)
+2810,St. Thomas (TX)
 1348,St. Thomas Aquinas
 674,Stanford
 103,Stanislaus St.
@@ -1100,11 +1100,14 @@ school_id,school_name
 683,Stony Brook
 684,Suffolk
 1390,Sul Ross St.
+78,SUNY Brockport
 30165,SUNY Canton
-168,SUNY Cortland
+30083,SUNY Cobleskill 
+30225,SUNY Delhi
 247,SUNY Geneseo
 506001,SUNY Geneva
 478,SUNY Maritime
+30067,SUNY Morrisville
 475,SUNY New Paltz
 526,SUNY Oneonta
 9500,SUNY Poly
@@ -1126,9 +1129,7 @@ school_id,school_name
 691,Tennessee St.
 692,Tennessee Tech
 30090,Tex. A&M Int'l
-199,Tex. A&M-Commerce
 696,Tex. A&M-Kingsville
-30088,Tex. Permian Basin
 703,Texas
 697,Texas A&M
 505260,Texas Col.
@@ -1139,7 +1140,6 @@ school_id,school_name
 1401,Texas Wesleyan
 701,Texas Woman's
 23121,Texas-Dallas
-30028,Texas-Tyler
 506226,Texas-Tyler
 141,The Citadel
 707,Thiel
@@ -1151,14 +1151,14 @@ school_id,school_name
 711,Towson
 28749,Transylvania
 30002,Trevecca Nazarene
-30037,Trine
 505355,Trine
+30037,Trine
 713,Trinity (CT)
 505340,Trinity (IL)
 715,Trinity (TX)
 23413,Trinity Washington
 716,Troy
-499,Truman
+499,Truman St.
 717,Tufts
 718,Tulane
 719,Tulsa
@@ -1166,56 +1166,70 @@ school_id,school_name
 720,Tuskegee
 1255,U New England
 9,UAB
+10,UAH
+14,UAlbany
 108,UC Davis
 109,UC Irvine
+30266,UC Merced
 111,UC Riverside
 112,UC San Diego
 104,UC Santa Barbara
 113,UC Santa Cruz
-9754,UC-Colo. Springs
+9754,UCCS
 128,UCF
+137,UChicago
 110,UCLA
 164,UConn
+302,UIC
 309,UIndy
+2743,UIW
+498,ULM
 401,UMass Boston
 656,UMass Dartmouth
 368,UMass Lowell
 391,UMBC
 393,UMES
-2707,UMKC
+451,UMSV
 456,UNC Asheville
+459,UNC Greensboro
 537,UNC Pembroke
-459,UNCG
 460,UNCW
 504,UNI
-506105,Union (KY)
 727,Union (NY)
-505405,Union (TN)
 30153,Union (TN)
+505405,Union (TN)
+506105,Union Commonwealth
 465,UNLV
 728,Upper Iowa
 506217,Upsala
 30104,Urbana
 730,Ursinus
 30140,Ursuline
+11276,USC Aiken
+30259,USC Beaufort
 10411,USC Upstate
 28594,USciences
 702,UT Arlington
 695,UT Martin
+30088,UT Permian Basin
+30028,UT Tyler
 732,Utah
 731,Utah St.
+30095,Utah Tech
 30024,Utah Valley
 704,UTEP
 733,Utica
 536,UTRGV
 706,UTSA
-30181,UVa-Wise
+30181,UVA Wise
+801,UW-River Falls
 745,Va. Wesleyan
 734,Valdosta St.
 506055,Valley City St.
 30166,Valley Forge
 735,Valparaiso
 736,Vanderbilt
+30263,Vanguard
 737,Vassar
 740,VCU
 738,Vermont
@@ -1225,10 +1239,14 @@ school_id,school_name
 742,Virginia Tech
 744,Virginia Union
 741,VMI
+123,VTSU Castleton
+30065,VTSU Lyndon
+324,VTSU-Johnson
 747,Wabash
 748,Wagner
 749,Wake Forest
 30141,Walsh
+30236,Warren Wilson
 750,Wartburg
 751,Wash. & Jeff.
 752,Wash. & Lee
@@ -1237,7 +1255,7 @@ school_id,school_name
 1029,Washington Adventist
 753,Washington Col.
 754,Washington St.
-755,Washington-St. Louis
+755,WashU
 505610,Wayland Baptist
 757,Wayne St. (MI)
 1433,Wayne St. (NE)
@@ -1261,26 +1279,27 @@ school_id,school_name
 9630,West Va. Wesleyan
 768,West Virginia
 1439,West Virginia St.
+770,WestConn
 769,Western Caro.
-770,Western Conn. St.
+2759,Western Colo.
 771,Western Ill.
 772,Western Ky.
 774,Western Mich.
 1445,Western N.M.
 775,Western New Eng.
 1446,Western Ore.
-2759,Western St.
 1448,Western Wash.
 777,Westfield St.
 505184,Westmar
 1450,Westminster (MO)
 1451,Westminster (PA)
-30209,Westminster (UT)
 506139,Westminster (UT)
+30209,Westminster (UT)
+30260,Westmont
 505775,Westmont
 778,Wheaton (IL)
 779,Wheaton (MA)
-12799,Wheeling Jesuit
+12799,Wheeling
 8896,Wheelock
 780,Whitman
 781,Whittier
@@ -1312,7 +1331,6 @@ school_id,school_name
 798,Wis.-Oshkosh
 799,Wis.-Parkside
 800,Wis.-Platteville
-801,Wis.-River Falls
 802,Wis.-Stevens Point
 803,Wis.-Stout
 804,Wis.-Superior
@@ -1328,7 +1346,6 @@ school_id,school_name
 811,Wyoming
 812,Xavier
 813,Yale
-506249,Yankton
 814,Yeshiva
 2730,York (NY)
 815,York (PA)

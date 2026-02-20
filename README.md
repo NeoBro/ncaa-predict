@@ -45,13 +45,14 @@ See [the README in the `csv` folder](csv/README.md) for details.
 ## Training a model
 
 ```
-./train.py -y $TRAINING_YEARS -p $VALIDATION_YEAR -o $MODEL_OUT
+./train.py -y $TRAIN_YEARS -v $VALIDATION_YEARS -t $TEST_YEARS \
+  --player-year-offset -1 -o $MODEL_OUT
 ```
 
 Example:
 
 ```
-./train.py -y 2002,2003,2004 -p 2005 -o model_2002-2004
+./train.py -y 2002,2003,2004 -v 2005 -t 2006 -o model_2002-2004
 ```
 
 See other training options with `./train.py --help`. You may also want to
@@ -60,6 +61,20 @@ you will need to edit the code.
 
 This trains a [Keras](https://keras.io/) classifier
 using player stats to predict which team will win in a matchup.
+
+`train.py` now uses explicit time-based splits and does not use random
+validation slicing. By default it also uses previous-season player data
+(`--player-year-offset -1`) to reduce same-season leakage.
+
+## Rolling backtest
+
+```
+./backtest.py --start-year 2002 --end-year 2017 --min-train-years 5 \
+  --player-year-offset -1
+```
+
+This runs rolling train/validate folds and reports mean/stdev of loss and
+accuracy so you can spot unstable model behavior across seasons.
 
 ## Evaluating a model
 
@@ -98,6 +113,9 @@ Once you've added your bracket:
 ```
 ./predict.py -m $YOUR_MODEL -y $YEAR
 ```
+
+By default, `predict.py` uses player stats from `$YEAR - 1`. Override this with
+`--player-year` if needed.
 
 And you should get output like:
 

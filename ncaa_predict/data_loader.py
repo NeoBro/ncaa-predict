@@ -50,7 +50,7 @@ class Position(Enum):
             return Position.FORWARD
         elif col == "C":
             return Position.CENTER
-        elif col is np.nan:
+        elif pd.isna(col):
             return Position.NONE
         else:
             raise NotImplementedError("%s is not a known Position" % col)
@@ -75,15 +75,69 @@ THIS_DIR = os.path.dirname(__file__)
 def load_csv(path, columns):
     path = os.path.join(THIS_DIR, "..", path)
     df = pd.read_csv(path, usecols=list(columns))
-    df = df.apply(pd.to_numeric, errors="ignore")
+    for colname in df.columns:
+        series = df[colname]
+        if series.dtype != object:
+            continue
+        converted = pd.to_numeric(series, errors="coerce")
+        if converted.notna().sum() >= (series.notna().sum() * 0.9):
+            df[colname] = converted
     return df
 
 
-def load_ncaa_games(year):
-    columns = ["year", "school_id", "opponent_id", "score", "opponent_score"]
+def _qc_guard(name, bad_count, total, max_bad_ratio):
+    if total == 0:
+        return
+    ratio = bad_count / total
+    if ratio > max_bad_ratio:
+        raise ValueError(
+            "%s failed QC: %s/%s rows (%.2f%%) exceeds %.2f%% limit" % (
+                name, bad_count, total, ratio * 100, max_bad_ratio * 100))
+
+
+def _dedupe_games(games):
+    keys = pd.DataFrame({
+        "game_date": games["game_date"].dt.strftime("%Y-%m-%d"),
+        "low_id": games[["school_id", "opponent_id"]].min(axis=1),
+        "high_id": games[["school_id", "opponent_id"]].max(axis=1),
+    })
+    duplicated = keys.duplicated(keep="first")
+    return games[~duplicated].copy(), int(duplicated.sum())
+
+
+def load_ncaa_games(year, max_bad_ratio=0.05, dedupe=True):
+    columns = [
+        "year", "game_date", "school_id", "opponent_id", "score",
+        "opponent_score",
+    ]
     path = "csv/ncaa_games_%s.csv" % year
-    return load_csv(path, columns) \
-        .dropna()
+    games = load_csv(path, columns)
+    raw_rows = len(games)
+
+    games["game_date"] = pd.to_datetime(games["game_date"], errors="coerce")
+    required = ["game_date", "school_id", "opponent_id", "score", "opponent_score"]
+    missing_required = int(games[required].isna().any(axis=1).sum())
+    _qc_guard("%s required fields" % path, missing_required, raw_rows, max_bad_ratio)
+    games = games.dropna(subset=required)
+
+    invalid_team_ids = int((games["school_id"] == games["opponent_id"]).sum())
+    _qc_guard("%s invalid team ids" % path, invalid_team_ids, raw_rows, max_bad_ratio)
+    games = games[games["school_id"] != games["opponent_id"]]
+
+    ties = int((games["score"] == games["opponent_score"]).sum())
+    _qc_guard("%s tied scores" % path, ties, raw_rows, max_bad_ratio)
+    games = games[games["score"] != games["opponent_score"]]
+
+    dropped_dupes = 0
+    if dedupe:
+        games, dropped_dupes = _dedupe_games(games)
+
+    print(
+        "Games %s: raw=%s dropped_missing=%s dropped_invalid=%s dropped_ties=%s "
+        "dropped_dupes=%s final=%s" % (
+            year, raw_rows, missing_required, invalid_team_ids, ties,
+            dropped_dupes, len(games)))
+    return games
 
 
 def load_ncaa_players(year):
@@ -104,7 +158,7 @@ def load_ncaa_schools():
 
 def _setup_players(team):
     team = np.hstack([
-        team[PLAYER_FLOAT_COLUMNS].as_matrix(),
+        team[PLAYER_FLOAT_COLUMNS].to_numpy(),
         [p.value for p in team["position"].values],
         [c.value for c in team["class"].values]
     ])
@@ -127,16 +181,19 @@ def get_players_for_team(players, school_id):
     return _setup_players(team)
 
 
-def load_data(year):
-    print("Loading data for %s" % year)
+def load_data(year, player_year_offset=0):
+    player_year = year + player_year_offset
+    print("Loading data for %s (players from %s)" % (year, player_year))
     games = load_ncaa_games(year)
-    players = load_ncaa_players(year)
+    players = load_ncaa_players(player_year)
     teams = {school_id: _setup_players(team) for school_id, team in players}
-    print("Loaded %s teams" % len(teams))
+    print("Loaded %s teams from player year %s" % (len(teams), player_year))
 
     games = [game for game in games.itertuples()
              if game.school_id in teams and game.opponent_id in teams]
     num_games = len(games)
+    if num_games == 0:
+        raise ValueError("No usable games for year %s after filtering" % year)
     features = np.empty(shape=[num_games, 2, N_PLAYERS, N_FEATURES],
                         dtype=np.float32)
     labels = np.empty(shape=[num_games, 2], dtype=np.int8)
@@ -146,13 +203,13 @@ def load_data(year):
         features[i] = [this_team, other_team]
         labels[i] = [1, 0] if game.score > game.opponent_score else [0, 1]
     print("Loaded %s games" % num_games)
-    assert i == num_games - 1
     return features, labels
 
 
-def load_data_multiyear(years):
+def load_data_multiyear(years, player_year_offset=0):
+    jobs = [(year, player_year_offset) for year in years]
     with multiprocessing.Pool() as p:
-        data = p.map(load_data, years)
+        data = p.starmap(load_data, jobs)
     features = np.vstack([features for features, _ in data])
     labels = np.vstack([labels for _, labels in data])
     assert len(features) == len(labels)

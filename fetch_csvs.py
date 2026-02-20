@@ -5,14 +5,24 @@ import itertools
 import multiprocessing
 import os
 
-import lxml
+import lxml.html
 import requests
 
 
-SEARCH_URL = "http://web1.ncaa.org/stats/StatsSrv/careersearch"
-RECORDS_URL = "http://web1.ncaa.org/stats/exec/records"
-TEAM_URL = "http://web1.ncaa.org/stats/StatsSrv/careerteam"
+SEARCH_URL = "https://web1.ncaa.org/stats/StatsSrv/careersearch"
+RECORDS_URL = "https://web1.ncaa.org/stats/exec/records"
+TEAM_URL = "https://web1.ncaa.org/stats/StatsSrv/careerteam"
 SCHOOL_CSV = "csv/ncaa_schools.csv"
+
+SESSION = requests.Session()
+DEFAULT_HEADERS = {
+    "user-agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "accept":
+        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "accept-language": "en-US,en;q=0.9",
+}
 
 SCRAPE_GAME_COLS = [
     "opponent_name", "game_date", "score", "opponent_score",
@@ -40,16 +50,12 @@ PLAYER_COLS = SCRAPE_PLAYER_COLS + [
 
 
 def post_form(url, post_data=None):
-    headers = {
-        "user-agent":
-            "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, "
-            "like Gecko) Chrome/41.0.2228.0 Safari/537.36",
-        "referrer": url,
-    }
+    headers = dict(DEFAULT_HEADERS)
+    headers["referer"] = SEARCH_URL
     if post_data is not None:
-        res = requests.post(url, data=post_data, headers=headers)
+        res = SESSION.post(url, data=post_data, headers=headers)
     else:
-        res = requests.get(url, headers=headers)
+        res = SESSION.get(url, headers=headers)
     res.raise_for_status()
     return lxml.html.document_fromstring(res.text)
 
@@ -191,8 +197,11 @@ def get_school_players(year, school):
                 if content == "-":
                     content = None
                 elif colname == "height":
-                    feet, inches = content.split("-")
-                    content = int(feet) * 12 + int(inches)
+                    try:
+                        feet, inches = content.split("-")
+                        content = int(feet) * 12 + int(inches)
+                    except (ValueError, TypeError):
+                        content = None
                 player[colname] = content
             for colname in int_cols:
                 if player[colname] is not None:
