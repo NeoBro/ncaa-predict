@@ -5,7 +5,7 @@ import itertools
 import multiprocessing
 import os
 
-import lxml.html
+import lxml
 import requests
 
 
