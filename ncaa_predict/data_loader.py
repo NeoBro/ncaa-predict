@@ -21,6 +21,8 @@ class Class(Enum):
 
     @staticmethod
     def from_col(col):
+        if pd.isna(col):
+            return Class.UNKNOWN
         if col == "Fr.":
             return Class.FRESHMAN
         elif col == "Jr.":
@@ -29,10 +31,10 @@ class Class(Enum):
             return Class.SOPHOMORE
         elif col == "Sr.":
             return Class.SENIOR
-        elif col == "---":
+        elif col in ("---", "Unknown"):
             return Class.UNKNOWN
         else:
-            raise NotImplementedError("%s is not a known Class" % col)
+            return Class.UNKNOWN
 
 
 @unique
@@ -44,16 +46,18 @@ class Position(Enum):
 
     @staticmethod
     def from_col(col):
+        if pd.isna(col):
+            return Position.NONE
         if col in ("G", "Guard"):
             return Position.GUARD
         elif col in ("F", "Forward"):
             return Position.FORWARD
         elif col == "C":
             return Position.CENTER
-        elif pd.isna(col):
+        elif col in ("---", "Unknown"):
             return Position.NONE
         else:
-            raise NotImplementedError("%s is not a known Position" % col)
+            return Position.NONE
 
 
 PLAYER_FLOAT_COLUMNS = [

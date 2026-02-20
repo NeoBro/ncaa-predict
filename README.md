@@ -55,6 +55,18 @@ Example:
 ./train.py -y 2002,2003,2004 -v 2005 -t 2006 -o model_2002-2004
 ```
 
+Recommended training extras:
+
+```
+./train.py ... --seed 42 --early-stopping-patience 5 --metrics-out reports/train_run.json
+```
+
+Notes:
+  - If `-o/--model-out` is set, the best validation checkpoint is saved during
+    training and final model state is saved again at the end.
+  - Unknown player class/position values are mapped to fallback categories
+    instead of crashing the loader.
+
 See other training options with `./train.py --help`. You may also want to
 change the hidden layers, but this currently isn't a command-line option and
 you will need to edit the code.
