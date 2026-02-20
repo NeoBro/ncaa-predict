@@ -12,6 +12,7 @@ from ncaa_predict.score_pipeline import (
     load_pipeline,
     platt_predict,
 )
+from ncaa_predict.tourney_pipeline import normalize_team_name
 from ncaa_predict.util import team_name_to_id
 
 
@@ -55,22 +56,7 @@ def feature_row(team_a_stats, team_b_stats):
 
 
 def normalize_name(name):
-    name = name.lower()
-    for c in ["'", ".", ",", "(", ")", "-", "&"]:
-        name = name.replace(c, " ")
-    name = " ".join(name.split())
-    replacements = {
-        "saint": "st",
-        "mount": "mt",
-        "and": "",
-    }
-    tokens = [replacements.get(t, t) for t in name.split()]
-    tokens = [t for t in tokens if t]
-    out = " ".join(tokens)
-    aliases = {
-        "liu brooklyn": "liu",
-    }
-    return aliases.get(out, out)
+    return normalize_team_name(name)
 
 
 def resolve_team_id(team_name, schools):

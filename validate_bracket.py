@@ -10,26 +10,12 @@ from ncaa_predict.tourney_pipeline import (
     build_kaggle_to_ncaa_id_map,
     load_seed_name_map,
     load_seed_map,
+    normalize_team_name,
 )
 
 
 def normalize_name(name):
-    text = name.lower()
-    for c in ["'", ".", ",", "(", ")", "-", "&", "/"]:
-        text = text.replace(c, " ")
-    text = " ".join(text.split())
-    repl = {
-        "saint": "st",
-        "mount": "mt",
-        "state": "st",
-        "university": "u",
-    }
-    tokens = [repl.get(tok, tok) for tok in text.split()]
-    out = " ".join(tokens)
-    aliases = {
-        "liu brooklyn": "liu",
-    }
-    return aliases.get(out, out)
+    return normalize_team_name(name)
 
 
 def flatten(node):

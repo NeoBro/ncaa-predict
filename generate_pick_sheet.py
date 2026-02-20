@@ -18,6 +18,7 @@ from ncaa_predict.score_pipeline import (
 from ncaa_predict.tourney_pipeline import (
     build_kaggle_to_ncaa_id_map,
     load_custom_seed_map,
+    normalize_team_name,
     load_seed_name_map,
     load_seed_map,
     season_team_stats_from_csv,
@@ -31,22 +32,7 @@ def sigmoid(z):
 
 
 def normalize_name(name):
-    text = name.lower()
-    for c in ["'", ".", ",", "(", ")", "-", "&", "/"]:
-        text = text.replace(c, " ")
-    text = " ".join(text.split())
-    repl = {
-        "saint": "st",
-        "mount": "mt",
-        "state": "st",
-        "university": "u",
-    }
-    toks = [repl.get(tok, tok) for tok in text.split()]
-    out = " ".join(toks)
-    aliases = {
-        "liu brooklyn": "liu",
-    }
-    return aliases.get(out, out)
+    return normalize_team_name(name)
 
 
 def resolve_id(name, schools_df):

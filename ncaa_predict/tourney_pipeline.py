@@ -5,6 +5,35 @@ import pandas as pd
 from ncaa_predict.score_pipeline import _team_stats, _feature_row
 
 
+_ALIASES = None
+
+
+def _load_aliases():
+    global _ALIASES
+    if _ALIASES is not None:
+        return _ALIASES
+    aliases = {
+        "liu brooklyn": "liu",
+        "f dickinson": "fdu",
+        "fairleigh dickinson": "fdu",
+        "farligh dickerson": "fdu",
+        "fairleigh dickerson": "fdu",
+    }
+    path = os.path.join(os.path.dirname(__file__), "..", "csv", "team_aliases.csv")
+    path = os.path.normpath(path)
+    if os.path.exists(path):
+        df = pd.read_csv(path)
+        cols = {c.lower(): c for c in df.columns}
+        if "alias" in cols and "canonical" in cols:
+            for row in df.itertuples():
+                a = str(getattr(row, cols["alias"])).strip().lower()
+                c = str(getattr(row, cols["canonical"])).strip().lower()
+                if a and c:
+                    aliases[a] = c
+    _ALIASES = aliases
+    return _ALIASES
+
+
 def normalize_team_name(name):
     if pd.isna(name):
         return ""
@@ -20,7 +49,9 @@ def normalize_team_name(name):
     }
     tokens = [replacements.get(tok, tok) for tok in text.split()]
     tokens = [tok for tok in tokens if tok]
-    return " ".join(tokens)
+    out = " ".join(tokens)
+    aliases = _load_aliases()
+    return aliases.get(out, out)
 
 
 def load_kaggle_tourney(kaggle_dir):
