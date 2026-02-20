@@ -30,19 +30,24 @@ def run_fold(
     stats_year_offset,
     ridge_l2,
     kaggle_to_ncaa,
+    cutoff_month,
+    cutoff_day,
 ):
     x_train, y_a_train, y_b_train, _ = build_tourney_feature_dataset(
         kaggle_games, all_games_csv, train_years,
         stats_year_offset=stats_year_offset,
-        kaggle_to_ncaa_id_map=kaggle_to_ncaa)
+        kaggle_to_ncaa_id_map=kaggle_to_ncaa,
+        cutoff_month=cutoff_month, cutoff_day=cutoff_day)
     x_val, y_a_val, y_b_val, _ = build_tourney_feature_dataset(
         kaggle_games, all_games_csv, [validation_year],
         stats_year_offset=stats_year_offset,
-        kaggle_to_ncaa_id_map=kaggle_to_ncaa)
+        kaggle_to_ncaa_id_map=kaggle_to_ncaa,
+        cutoff_month=cutoff_month, cutoff_day=cutoff_day)
     x_test, y_a_test, y_b_test, _ = build_tourney_feature_dataset(
         kaggle_games, all_games_csv, [test_year],
         stats_year_offset=stats_year_offset,
-        kaggle_to_ncaa_id_map=kaggle_to_ncaa)
+        kaggle_to_ncaa_id_map=kaggle_to_ncaa,
+        cutoff_month=cutoff_month, cutoff_day=cutoff_day)
 
     model_a = fit_ridge_regression(x_train, y_a_train, l2=ridge_l2)
     model_b = fit_ridge_regression(x_train, y_b_train, l2=ridge_l2)
@@ -76,7 +81,9 @@ if __name__ == "__main__":
     parser.add_argument("--start-year", type=int, required=True)
     parser.add_argument("--end-year", type=int, required=True)
     parser.add_argument("--min-train-years", type=int, default=6)
-    parser.add_argument("--stats-year-offset", type=int, default=-1)
+    parser.add_argument("--stats-year-offset", type=int, default=0)
+    parser.add_argument("--cutoff-month", type=int, default=3)
+    parser.add_argument("--cutoff-day", type=int, default=15)
     parser.add_argument("--ridge-l2", type=float, default=1.0)
     parser.add_argument("--min-id-coverage", type=float, default=0.98)
     parser.add_argument("--report-out", default=None)
@@ -116,7 +123,9 @@ if __name__ == "__main__":
             kaggle_games, args.all_games_csv, train_years, val_year, test_year,
             stats_year_offset=args.stats_year_offset,
             ridge_l2=args.ridge_l2,
-            kaggle_to_ncaa=kaggle_to_ncaa)
+            kaggle_to_ncaa=kaggle_to_ncaa,
+            cutoff_month=args.cutoff_month,
+            cutoff_day=args.cutoff_day)
         print(
             "Fold train=%s-%s val=%s test=%s w=%.2f test_acc=%.4f "
             "test_brier=%.4f test_logloss=%.4f test_mae=%.4f" % (
@@ -165,6 +174,8 @@ if __name__ == "__main__":
                     "end_year": args.end_year,
                     "min_train_years": args.min_train_years,
                     "stats_year_offset": args.stats_year_offset,
+                    "cutoff_month": args.cutoff_month,
+                    "cutoff_day": args.cutoff_day,
                     "ridge_l2": args.ridge_l2,
                     "min_id_coverage": args.min_id_coverage,
                 },

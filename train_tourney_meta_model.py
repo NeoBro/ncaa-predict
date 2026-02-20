@@ -17,6 +17,8 @@ from ncaa_predict.tourney_pipeline import (
     build_kaggle_to_ncaa_id_map,
     load_kaggle_tourney,
     load_seed_map,
+    season_team_stats_from_csv,
+    season_team_stats_from_csv_with_cutoff,
 )
 from ncaa_predict.util import list_arg
 
@@ -47,6 +49,39 @@ def metrics(y, p):
     brier = float(np.mean((p - y) ** 2))
     ll = float(-np.mean((y * np.log(p)) + ((1 - y) * np.log(1 - p))))
     return {"accuracy": acc, "brier": brier, "log_loss": ll}
+
+
+def compute_seed_upset_priors(kaggle_games, years, kaggle_to_ncaa, seed_map):
+    pair_counts = {}
+    pair_upsets = {}
+    total = 0
+    upsets = 0
+    season = kaggle_games[kaggle_games["Season"].isin(years)]
+    for g in season.itertuples():
+        wa = int(g.WTeamID)
+        la = int(g.LTeamID)
+        if wa not in kaggle_to_ncaa or la not in kaggle_to_ncaa:
+            continue
+        w_id = int(kaggle_to_ncaa[wa])
+        l_id = int(kaggle_to_ncaa[la])
+        sw = seed_map.get((int(g.Season), w_id))
+        sl = seed_map.get((int(g.Season), l_id))
+        if sw is None or sl is None or sw == sl:
+            continue
+        fav_seed = min(sw, sl)
+        dog_seed = max(sw, sl)
+        upset = (sw > sl)
+        key = "%d-%d" % (fav_seed, dog_seed)
+        pair_counts[key] = pair_counts.get(key, 0) + 1
+        pair_upsets[key] = pair_upsets.get(key, 0) + (1 if upset else 0)
+        total += 1
+        upsets += (1 if upset else 0)
+    global_upset = (upsets / total) if total else 0.35
+    pair_rates = {}
+    for key, n in pair_counts.items():
+        # Laplace smoothing to keep rare pairs stable.
+        pair_rates[key] = float((pair_upsets[key] + 1.0) / (n + 2.0))
+    return pair_rates, float(global_upset)
 
 
 def season_stats(all_games_csv, season):
@@ -86,15 +121,23 @@ def build_datasets(
     score_payload,
     score_model_a,
     score_model_b,
+    seed_pair_upset_priors,
+    global_upset_prior,
+    cutoff_month=None,
+    cutoff_day=None,
 ):
-    import pandas as pd
     x_win, y_win = [], []
     x_upset, y_upset = [], []
-    all_games = pd.read_csv(
-        all_games_csv,
-        usecols=["year", "school_id", "opponent_id", "score", "opponent_score"])
     for year in years:
-        stats = _team_stats(all_games[all_games["year"] == (year + stats_year_offset)])
+        stats_year = year + stats_year_offset
+        if cutoff_month is None or cutoff_day is None:
+            stats = season_team_stats_from_csv(all_games_csv, stats_year)
+        else:
+            stats = season_team_stats_from_csv_with_cutoff(
+                all_games_csv, stats_year,
+                cutoff_month=cutoff_month, cutoff_day=cutoff_day)
+        if stats is None:
+            continue
         if len(stats) == 0:
             continue
         season = kaggle_games[kaggle_games["Season"] == year]
@@ -115,6 +158,16 @@ def build_datasets(
                     row, score_payload, score_model_a, score_model_b)
                 sa = seed_map.get((year, a_id), 20)
                 sb = seed_map.get((year, b_id), 20)
+                fav_seed = min(sa, sb)
+                dog_seed = max(sa, sb)
+                key = "%d-%d" % (fav_seed, dog_seed)
+                upset_prior = float(seed_pair_upset_priors.get(key, global_upset_prior))
+                if sa < sb:
+                    p_a_seed = 1.0 - upset_prior
+                elif sa > sb:
+                    p_a_seed = upset_prior
+                else:
+                    p_a_seed = 0.5
                 x_win.append([
                     float(p[0]),
                     float(diff[0]),
@@ -122,6 +175,7 @@ def build_datasets(
                     float(sa),
                     float(sb),
                     float(sb - sa),
+                    float(p_a_seed),
                 ])
                 y_win.append(y)
 
@@ -134,6 +188,8 @@ def build_datasets(
             upset = 1.0 if fav_id == l_id else 0.0
             fav_seed = min(sw, sl)
             dog_seed = max(sw, sl)
+            key = "%d-%d" % (fav_seed, dog_seed)
+            upset_prior = float(seed_pair_upset_priors.get(key, global_upset_prior))
             row = np.array([_feature_row(stats.loc[fav_id], stats.loc[dog_id])], dtype=np.float32)
             _, _, diff, p = score_model_outputs(
                 row, score_payload, score_model_a, score_model_b)
@@ -144,6 +200,7 @@ def build_datasets(
                 float(fav_seed),
                 float(dog_seed),
                 float(dog_seed - fav_seed),
+                float(upset_prior),
             ])
             y_upset.append(upset)
     return (
@@ -162,7 +219,9 @@ if __name__ == "__main__":
     parser.add_argument("--train-years", "-y", required=True, type=list_arg(type=int, container=list))
     parser.add_argument("--validation-years", "-v", required=True, type=list_arg(type=int, container=list))
     parser.add_argument("--test-years", "-t", default=[], type=list_arg(type=int, container=list))
-    parser.add_argument("--stats-year-offset", type=int, default=-1)
+    parser.add_argument("--stats-year-offset", type=int, default=0)
+    parser.add_argument("--cutoff-month", type=int, default=3)
+    parser.add_argument("--cutoff-day", type=int, default=15)
     parser.add_argument("--l2", type=float, default=1.0)
     parser.add_argument("--model-out", "-o", required=True)
     args = parser.parse_args()
@@ -172,13 +231,19 @@ if __name__ == "__main__":
     kaggle_games = load_kaggle_tourney(args.kaggle_dir)
     seed_map = load_seed_map(args.kaggle_dir, kaggle_to_ncaa_id_map=kaggle_to_ncaa)
     score_payload, score_model_a, score_model_b = load_pipeline(args.score_model_in)
+    seed_pair_upset_priors, global_upset_prior = compute_seed_upset_priors(
+        kaggle_games, args.train_years, kaggle_to_ncaa, seed_map)
 
     xw_tr, yw_tr, xu_tr, yu_tr = build_datasets(
         kaggle_games, args.all_games_csv, args.train_years, args.stats_year_offset,
-        kaggle_to_ncaa, seed_map, score_payload, score_model_a, score_model_b)
+        kaggle_to_ncaa, seed_map, score_payload, score_model_a, score_model_b,
+        seed_pair_upset_priors, global_upset_prior,
+        cutoff_month=args.cutoff_month, cutoff_day=args.cutoff_day)
     xw_va, yw_va, xu_va, yu_va = build_datasets(
         kaggle_games, args.all_games_csv, args.validation_years, args.stats_year_offset,
-        kaggle_to_ncaa, seed_map, score_payload, score_model_a, score_model_b)
+        kaggle_to_ncaa, seed_map, score_payload, score_model_a, score_model_b,
+        seed_pair_upset_priors, global_upset_prior,
+        cutoff_month=args.cutoff_month, cutoff_day=args.cutoff_day)
 
     ww, bw = fit_logreg(xw_tr, yw_tr, l2=args.l2)
     wu, bu = fit_logreg(xu_tr, yu_tr, l2=args.l2)
@@ -192,7 +257,9 @@ if __name__ == "__main__":
     if args.test_years:
         xw_te, yw_te, xu_te, yu_te = build_datasets(
             kaggle_games, args.all_games_csv, args.test_years, args.stats_year_offset,
-            kaggle_to_ncaa, seed_map, score_payload, score_model_a, score_model_b)
+            kaggle_to_ncaa, seed_map, score_payload, score_model_a, score_model_b,
+            seed_pair_upset_priors, global_upset_prior,
+            cutoff_month=args.cutoff_month, cutoff_day=args.cutoff_day)
         test_metrics = {
             "win": metrics(yw_te, sigmoid(xw_te @ ww + bw)),
             "upset": metrics(yu_te, sigmoid(xu_te @ wu + bu)),
@@ -212,6 +279,8 @@ if __name__ == "__main__":
                 "validation_years": args.validation_years,
                 "test_years": args.test_years,
                 "stats_year_offset": args.stats_year_offset,
+                "cutoff_month": args.cutoff_month,
+                "cutoff_day": args.cutoff_day,
                 "l2": args.l2,
             },
             "mapping_summary": {
@@ -220,8 +289,20 @@ if __name__ == "__main__":
                 "ambiguous_count": len(ambiguous),
             },
             "features": {
-                "win": ["score_win_prob_a", "score_margin", "score_margin_abs", "seed_a", "seed_b", "seed_diff"],
-                "upset": ["fav_score_win_prob", "fav_score_margin", "fav_margin_abs", "fav_seed", "dog_seed", "seed_gap"],
+                "win": [
+                    "score_win_prob_a", "score_margin", "score_margin_abs",
+                    "seed_a", "seed_b", "seed_diff",
+                    "seed_prior_win_a",
+                ],
+                "upset": [
+                    "fav_score_win_prob", "fav_score_margin", "fav_margin_abs",
+                    "fav_seed", "dog_seed", "seed_gap",
+                    "seed_prior_upset",
+                ],
+            },
+            "seed_upset_priors": {
+                "global": global_upset_prior,
+                "pair_upset_rate": seed_pair_upset_priors,
             },
             "win_model": {"coef": [float(v) for v in ww.tolist()], "intercept": float(bw)},
             "upset_model": {"coef": [float(v) for v in wu.tolist()], "intercept": float(bu)},

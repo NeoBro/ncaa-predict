@@ -1,0 +1,68 @@
+round,team_a,team_b,seed_a,seed_b,score_pred_a,score_pred_b,win_prob_a,win_prob_b,pick,favorite,underdog,upset_prob
+7,LIU Brooklyn,Radford,20,16,72.629,64.757,0.4867,0.5133,Radford,Radford,LIU Brooklyn,0.4545
+6,Villanova,Radford,1,16,78.274,58.759,0.9467,0.0533,Villanova,Villanova,Radford,0.0443
+6,Virginia Tech,Alabama,8,9,72.132,70.752,0.5492,0.4508,Virginia Tech,Virginia Tech,Alabama,0.4327
+5,Villanova,Virginia Tech,1,8,77.431,68.746,0.7895,0.2105,Villanova,Villanova,Virginia Tech,0.1845
+6,Wichita St.,Marshall,4,13,85.761,70.258,0.8737,0.1263,Wichita St.,Wichita St.,Marshall,0.1024
+6,West Virginia,Murray St.,5,12,81.918,69.297,0.8224,0.1776,West Virginia,West Virginia,Murray St.,0.1487
+5,Wichita St.,West Virginia,4,5,74.29,70.822,0.5772,0.4228,Wichita St.,Wichita St.,West Virginia,0.3803
+4,Villanova,Wichita St.,1,4,68.465,72.796,0.5316,0.4684,Villanova,Villanova,Wichita St.,0.4134
+6,Purdue,Cal St. Fullerton,2,15,77.823,67.094,0.8962,0.1038,Purdue,Purdue,Cal St. Fullerton,0.1019
+6,Arkansas,Butler,7,10,73.402,75.081,0.567,0.433,Arkansas,Arkansas,Butler,0.4204
+5,Purdue,Arkansas,2,7,77.957,71.683,0.7207,0.2793,Purdue,Purdue,Arkansas,0.2498
+6,Texas Tech,SFA,3,14,72.058,66.337,0.8376,0.1624,Texas Tech,Texas Tech,SFA,0.1704
+7,St. Bonaventure,UCLA,11,11,73.319,83.15,0.3686,0.6314,UCLA,UCLA,St. Bonaventure,0.3057
+6,Florida,UCLA,6,11,75.337,78.778,0.6017,0.3983,Florida,Florida,UCLA,0.3824
+5,Texas Tech,Florida,3,6,68.408,73.406,0.5227,0.4773,Texas Tech,Texas Tech,Florida,0.4224
+4,Purdue,Texas Tech,2,3,74.58,68.408,0.6129,0.3871,Purdue,Purdue,Texas Tech,0.3252
+3,Villanova,Purdue,1,2,72.184,70.627,0.5511,0.4489,Villanova,Villanova,Purdue,0.408
+6,Kansas,Penn,1,16,77.115,68.206,0.9087,0.0913,Kansas,Kansas,Penn,0.0976
+6,Seton Hall,NC State,8,9,77.091,72.816,0.5881,0.4119,Seton Hall,Seton Hall,NC State,0.377
+5,Kansas,Seton Hall,1,8,77.638,70.911,0.7712,0.2288,Kansas,Kansas,Seton Hall,0.2092
+6,Auburn,Col. of Charleston,4,13,71.822,74.454,0.7194,0.2806,Auburn,Auburn,Col. of Charleston,0.2926
+6,Clemson,New Mexico St.,5,12,69.428,75.594,0.6233,0.3767,Clemson,Clemson,New Mexico St.,0.3496
+5,Auburn,Clemson,4,5,75.386,77.222,0.5052,0.4948,Auburn,Auburn,Clemson,0.4559
+4,Kansas,Auburn,1,4,82.575,74.183,0.695,0.305,Kansas,Kansas,Auburn,0.2494
+6,Duke,Iona,2,15,79.343,73.481,0.8687,0.1313,Duke,Duke,Iona,0.1434
+6,Rhode Island,Oklahoma,7,10,75.314,66.854,0.6953,0.3047,Rhode Island,Rhode Island,Oklahoma,0.2633
+5,Duke,Rhode Island,2,7,72.947,70.569,0.6758,0.3242,Duke,Duke,Rhode Island,0.3126
+6,Michigan St.,Bucknell,3,14,68.111,73.05,0.742,0.258,Michigan St.,Michigan St.,Bucknell,0.2625
+7,Arizona St.,Syracuse,11,11,72.801,80.225,0.3997,0.6003,Syracuse,Syracuse,Arizona St.,0.348
+6,TCU,Syracuse,6,11,71.245,73.361,0.619,0.381,TCU,TCU,Syracuse,0.3766
+5,Michigan St.,TCU,3,6,70.671,70.662,0.5903,0.4097,Michigan St.,Michigan St.,TCU,0.3996
+4,Duke,Michigan St.,2,3,75.742,68.822,0.6226,0.3774,Duke,Duke,Michigan St.,0.3122
+3,Kansas,Duke,1,2,75.738,76.067,0.5254,0.4746,Kansas,Kansas,Duke,0.4399
+2,Villanova,Kansas,1,1,75.236,71.508,0.5509,0.4491,Villanova,Kansas,Villanova,0.4771
+6,Virginia,UMBC,1,16,72.522,67.384,0.8901,0.1099,Virginia,Virginia,UMBC,0.1275
+6,Creighton,Kansas St.,8,9,75.571,70.971,0.5924,0.4076,Creighton,Creighton,Kansas St.,0.3709
+5,Virginia,Creighton,1,8,69.034,68.565,0.7052,0.2948,Virginia,Virginia,Creighton,0.3038
+6,Arizona,Buffalo,4,13,76.207,69.856,0.8075,0.1925,Arizona,Arizona,Buffalo,0.1915
+6,Kentucky,Davidson,5,12,80.9,69.733,0.8104,0.1896,Kentucky,Kentucky,Davidson,0.164
+5,Arizona,Kentucky,4,5,72.521,76.042,0.4821,0.5179,Kentucky,Arizona,Kentucky,0.4638
+4,Virginia,Kentucky,1,5,67.54,71.376,0.5681,0.4319,Virginia,Virginia,Kentucky,0.3896
+6,Cincinnati,Georgia St.,2,15,73.989,64.409,0.8902,0.1098,Cincinnati,Cincinnati,Georgia St.,0.1106
+6,Nevada,Texas,7,10,76.464,66.467,0.7128,0.2872,Nevada,Nevada,Texas,0.2402
+5,Cincinnati,Nevada,2,7,72.978,69.202,0.6924,0.3076,Cincinnati,Cincinnati,Nevada,0.2891
+6,Tennessee,Wright St.,3,14,72.524,75.367,0.7633,0.2367,Tennessee,Tennessee,Wright St.,0.255
+6,Miami (FL),Loyola Chicago,6,11,68.073,67.814,0.6492,0.3508,Miami (FL),Miami (FL),Loyola Chicago,0.3625
+5,Tennessee,Miami (FL),3,6,68.17,71.59,0.5442,0.4558,Tennessee,Tennessee,Miami (FL),0.4152
+4,Cincinnati,Tennessee,2,3,75.627,65.031,0.6685,0.3315,Cincinnati,Cincinnati,Tennessee,0.2528
+3,Virginia,Cincinnati,1,2,62.618,65.314,0.493,0.507,Cincinnati,Virginia,Cincinnati,0.4509
+7,N.C. Central,Texas Southern,16,16,73.668,67.405,0.5849,0.4151,N.C. Central,Texas Southern,N.C. Central,0.5366
+6,Xavier,N.C. Central,1,16,67.645,73.308,0.8176,0.1824,Xavier,Xavier,N.C. Central,0.1968
+6,Missouri,Florida St.,8,9,66.843,80.476,0.3488,0.6512,Florida St.,Missouri,Florida St.,0.5234
+5,Xavier,Florida St.,1,9,70.903,78.168,0.6385,0.3615,Xavier,Xavier,Florida St.,0.3217
+6,Gonzaga,UNC Greensboro,4,13,79.852,64.069,0.8754,0.1246,Gonzaga,Gonzaga,UNC Greensboro,0.1003
+6,Ohio St.,South Dakota St.,5,12,75.267,72.995,0.7243,0.2757,Ohio St.,Ohio St.,South Dakota St.,0.2854
+5,Gonzaga,Ohio St.,4,5,80.713,62.385,0.7548,0.2452,Gonzaga,Gonzaga,Ohio St.,0.1577
+4,Xavier,Gonzaga,1,4,63.376,81.417,0.349,0.651,Gonzaga,Xavier,Gonzaga,0.4764
+6,North Carolina,Lipscomb,2,15,83.08,74.889,0.8825,0.1175,North Carolina,North Carolina,Lipscomb,0.122
+6,Texas A&M,Providence,7,10,68.134,69.016,0.5777,0.4223,Texas A&M,Texas A&M,Providence,0.4168
+5,North Carolina,Texas A&M,2,7,78.51,67.45,0.7703,0.2297,North Carolina,North Carolina,Texas A&M,0.1851
+6,Michigan,Montana,3,14,75.253,68.346,0.8462,0.1538,Michigan,Michigan,Montana,0.1574
+6,Houston,San Diego St.,6,11,68.636,65.437,0.6849,0.3151,Houston,Houston,San Diego St.,0.3101
+5,Michigan,Houston,3,6,69.585,69.119,0.5964,0.4036,Michigan,Michigan,Houston,0.3909
+4,North Carolina,Michigan,2,3,75.898,71.042,0.5957,0.4043,North Carolina,North Carolina,Michigan,0.3487
+3,Gonzaga,North Carolina,4,2,78.592,70.643,0.5493,0.4507,Gonzaga,North Carolina,Gonzaga,0.4567
+2,Cincinnati,Gonzaga,2,4,65.125,74.115,0.4367,0.5633,Gonzaga,Cincinnati,Gonzaga,0.4615
+1,Villanova,Gonzaga,1,4,67.001,74.768,0.4846,0.5154,Gonzaga,Villanova,Gonzaga,0.4291

@@ -166,6 +166,33 @@ def season_team_stats_from_csv(all_games_csv, season):
     return _team_stats(season_games)
 
 
+def season_team_stats_from_csv_with_cutoff(
+    all_games_csv,
+    season,
+    cutoff_month=3,
+    cutoff_day=15,
+):
+    games = pd.read_csv(
+        all_games_csv,
+        usecols=[
+            "year", "school_id", "opponent_id",
+            "score", "opponent_score", "game_date",
+        ])
+    season_games = games[games["year"] == season].copy()
+    if len(season_games) == 0:
+        return None
+    season_games["game_date"] = pd.to_datetime(
+        season_games["game_date"], errors="coerce")
+    cutoff = pd.Timestamp(year=int(season), month=int(cutoff_month), day=int(cutoff_day))
+    season_games = season_games[
+        season_games["game_date"].notna() &
+        (season_games["game_date"] <= cutoff)
+    ]
+    if len(season_games) == 0:
+        return None
+    return _team_stats(season_games)
+
+
 def load_season_team_ids(all_games_csv, season):
     games = pd.read_csv(
         all_games_csv,
@@ -221,6 +248,8 @@ def build_tourney_feature_dataset(
     years,
     stats_year_offset=-1,
     kaggle_to_ncaa_id_map=None,
+    cutoff_month=None,
+    cutoff_day=None,
 ):
     rows = []
     y_a = []
@@ -229,7 +258,12 @@ def build_tourney_feature_dataset(
     for year in years:
         season_games = kaggle_games[kaggle_games["Season"] == year]
         stats_year = year + stats_year_offset
-        stats = season_team_stats_from_csv(all_games_csv, stats_year)
+        if cutoff_month is None or cutoff_day is None:
+            stats = season_team_stats_from_csv(all_games_csv, stats_year)
+        else:
+            stats = season_team_stats_from_csv_with_cutoff(
+                all_games_csv, stats_year,
+                cutoff_month=cutoff_month, cutoff_day=cutoff_day)
         if stats is None:
             continue
         usable = 0

@@ -1,0 +1,68 @@
+round,team_a,team_b,seed_a,seed_b,score_pred_a,score_pred_b,win_prob_a,win_prob_b,pick,favorite,underdog,upset_prob,underdog_win_prob,pick_rule
+7,LIU Brooklyn,Radford,20,16,72.629,64.757,0.4867,0.5133,LIU Brooklyn,Radford,LIU Brooklyn,0.4545,0.4867,upset_rule
+6,Villanova,LIU Brooklyn,1,20,75.693,64.05,0.949,0.051,Villanova,Villanova,LIU Brooklyn,0.0574,0.051,win_prob
+6,Virginia Tech,Alabama,8,9,72.132,70.752,0.5492,0.4508,Alabama,Virginia Tech,Alabama,0.4327,0.4508,upset_rule
+5,Villanova,Alabama,1,9,73.082,63.017,0.8202,0.1798,Villanova,Villanova,Alabama,0.1563,0.1798,win_prob
+6,Wichita St.,Marshall,4,13,85.761,70.258,0.8737,0.1263,Wichita St.,Wichita St.,Marshall,0.1024,0.1263,win_prob
+6,West Virginia,Murray St.,5,12,81.918,69.297,0.8224,0.1776,West Virginia,West Virginia,Murray St.,0.1487,0.1776,win_prob
+5,Wichita St.,West Virginia,4,5,74.29,70.822,0.5772,0.4228,West Virginia,Wichita St.,West Virginia,0.3803,0.4228,upset_rule
+4,Villanova,West Virginia,1,5,71.189,72.053,0.6076,0.3924,West Virginia,Villanova,West Virginia,0.3764,0.3924,upset_rule
+6,Purdue,Cal St. Fullerton,2,15,77.823,67.094,0.8962,0.1038,Purdue,Purdue,Cal St. Fullerton,0.1019,0.1038,win_prob
+6,Arkansas,Butler,7,10,73.402,75.081,0.567,0.433,Butler,Arkansas,Butler,0.4204,0.433,upset_rule
+5,Purdue,Butler,2,10,74.834,70.24,0.7713,0.2287,Purdue,Purdue,Butler,0.2255,0.2287,win_prob
+6,Texas Tech,SFA,3,14,72.058,66.337,0.8376,0.1624,Texas Tech,Texas Tech,SFA,0.1704,0.1624,win_prob
+7,St. Bonaventure,UCLA,11,11,73.319,83.15,0.3686,0.6314,St. Bonaventure,UCLA,St. Bonaventure,0.3057,0.3686,upset_rule
+6,Florida,St. Bonaventure,6,11,76.313,69.923,0.7214,0.2786,Florida,Florida,St. Bonaventure,0.2583,0.2786,win_prob
+5,Texas Tech,Florida,3,6,68.408,73.406,0.5227,0.4773,Florida,Texas Tech,Florida,0.4224,0.4773,upset_rule
+4,Purdue,Florida,2,6,73.116,71.941,0.6339,0.3661,Florida,Purdue,Florida,0.3538,0.3661,upset_rule
+3,West Virginia,Florida,5,6,74.542,70.946,0.5793,0.4207,Florida,West Virginia,Florida,0.3805,0.4207,upset_rule
+6,Kansas,Penn,1,16,77.115,68.206,0.9087,0.0913,Kansas,Kansas,Penn,0.0976,0.0913,win_prob
+6,Seton Hall,NC State,8,9,77.091,72.816,0.5881,0.4119,NC State,Seton Hall,NC State,0.377,0.4119,upset_rule
+5,Kansas,NC State,1,9,83.229,72.227,0.8276,0.1724,Kansas,Kansas,NC State,0.1466,0.1724,win_prob
+6,Auburn,Col. of Charleston,4,13,71.822,74.454,0.7194,0.2806,Auburn,Auburn,Col. of Charleston,0.2926,0.2806,win_prob
+6,Clemson,New Mexico St.,5,12,69.428,75.594,0.6233,0.3767,New Mexico St.,Clemson,New Mexico St.,0.3496,0.3767,upset_rule
+5,Auburn,New Mexico St.,4,12,71.915,79.917,0.6289,0.3711,New Mexico St.,Auburn,New Mexico St.,0.3334,0.3711,upset_rule
+4,Kansas,New Mexico St.,1,12,74.782,74.391,0.794,0.206,Kansas,Kansas,New Mexico St.,0.2345,0.206,win_prob
+6,Duke,Iona,2,15,79.343,73.481,0.8687,0.1313,Duke,Duke,Iona,0.1434,0.1313,win_prob
+6,Rhode Island,Oklahoma,7,10,75.314,66.854,0.6953,0.3047,Rhode Island,Rhode Island,Oklahoma,0.2633,0.3047,win_prob
+5,Duke,Rhode Island,2,7,72.947,70.569,0.6758,0.3242,Duke,Duke,Rhode Island,0.3126,0.3242,win_prob
+6,Michigan St.,Bucknell,3,14,68.111,73.05,0.742,0.258,Michigan St.,Michigan St.,Bucknell,0.2625,0.258,win_prob
+7,Arizona St.,Syracuse,11,11,72.801,80.225,0.3997,0.6003,Arizona St.,Syracuse,Arizona St.,0.348,0.3997,upset_rule
+6,TCU,Arizona St.,6,11,78.39,73.082,0.7093,0.2907,TCU,TCU,Arizona St.,0.2752,0.2907,win_prob
+5,Michigan St.,TCU,3,6,70.671,70.662,0.5903,0.4097,TCU,Michigan St.,TCU,0.3996,0.4097,upset_rule
+4,Duke,TCU,2,6,76.606,69.677,0.7036,0.2964,Duke,Duke,TCU,0.2568,0.2964,win_prob
+3,Kansas,Duke,1,2,75.738,76.067,0.5254,0.4746,Duke,Kansas,Duke,0.4399,0.4746,upset_rule
+2,Florida,Duke,6,2,73.683,73.015,0.3898,0.6102,Florida,Duke,Florida,0.3785,0.3898,upset_rule
+6,Virginia,UMBC,1,16,72.522,67.384,0.8901,0.1099,Virginia,Virginia,UMBC,0.1275,0.1099,win_prob
+6,Creighton,Kansas St.,8,9,75.571,70.971,0.5924,0.4076,Kansas St.,Creighton,Kansas St.,0.3709,0.4076,upset_rule
+5,Virginia,Kansas St.,1,9,67.772,62.703,0.7763,0.2237,Virginia,Virginia,Kansas St.,0.2164,0.2237,win_prob
+6,Arizona,Buffalo,4,13,76.207,69.856,0.8075,0.1925,Arizona,Arizona,Buffalo,0.1915,0.1925,win_prob
+6,Kentucky,Davidson,5,12,80.9,69.733,0.8104,0.1896,Kentucky,Kentucky,Davidson,0.164,0.1896,win_prob
+5,Arizona,Kentucky,4,5,72.521,76.042,0.4821,0.5179,Kentucky,Arizona,Kentucky,0.4638,0.5179,upset_rule
+4,Virginia,Kentucky,1,5,67.54,71.376,0.5681,0.4319,Kentucky,Virginia,Kentucky,0.3896,0.4319,upset_rule
+6,Cincinnati,Georgia St.,2,15,73.989,64.409,0.8902,0.1098,Cincinnati,Cincinnati,Georgia St.,0.1106,0.1098,win_prob
+6,Nevada,Texas,7,10,76.464,66.467,0.7128,0.2872,Nevada,Nevada,Texas,0.2402,0.2872,win_prob
+5,Cincinnati,Nevada,2,7,72.978,69.202,0.6924,0.3076,Cincinnati,Cincinnati,Nevada,0.2891,0.3076,win_prob
+6,Tennessee,Wright St.,3,14,72.524,75.367,0.7633,0.2367,Tennessee,Tennessee,Wright St.,0.255,0.2367,win_prob
+6,Miami (FL),Loyola Chicago,6,11,68.073,67.814,0.6492,0.3508,Loyola Chicago,Miami (FL),Loyola Chicago,0.3625,0.3508,upset_rule
+5,Tennessee,Loyola Chicago,3,11,69.974,73.135,0.6877,0.3123,Tennessee,Tennessee,Loyola Chicago,0.3115,0.3123,win_prob
+4,Cincinnati,Tennessee,2,3,75.627,65.031,0.6685,0.3315,Cincinnati,Cincinnati,Tennessee,0.2528,0.3315,win_prob
+3,Kentucky,Cincinnati,5,2,73.228,72.088,0.4267,0.5733,Kentucky,Cincinnati,Kentucky,0.4035,0.4267,upset_rule
+7,N.C. Central,Texas Southern,16,16,73.668,67.405,0.5849,0.4151,N.C. Central,Texas Southern,N.C. Central,0.5366,0.5849,upset_rule
+6,Xavier,N.C. Central,1,16,67.645,73.308,0.8176,0.1824,Xavier,Xavier,N.C. Central,0.1968,0.1824,win_prob
+6,Missouri,Florida St.,8,9,66.843,80.476,0.3488,0.6512,Florida St.,Missouri,Florida St.,0.5234,0.6512,upset_rule
+5,Xavier,Florida St.,1,9,70.903,78.168,0.6385,0.3615,Florida St.,Xavier,Florida St.,0.3217,0.3615,upset_rule
+6,Gonzaga,UNC Greensboro,4,13,79.852,64.069,0.8754,0.1246,Gonzaga,Gonzaga,UNC Greensboro,0.1003,0.1246,win_prob
+6,Ohio St.,South Dakota St.,5,12,75.267,72.995,0.7243,0.2757,Ohio St.,Ohio St.,South Dakota St.,0.2854,0.2757,win_prob
+5,Gonzaga,Ohio St.,4,5,80.713,62.385,0.7548,0.2452,Gonzaga,Gonzaga,Ohio St.,0.1577,0.2452,win_prob
+4,Florida St.,Gonzaga,9,4,68.824,79.601,0.2325,0.7675,Gonzaga,Gonzaga,Florida St.,0.1925,0.2325,win_prob
+6,North Carolina,Lipscomb,2,15,83.08,74.889,0.8825,0.1175,North Carolina,North Carolina,Lipscomb,0.122,0.1175,win_prob
+6,Texas A&M,Providence,7,10,68.134,69.016,0.5777,0.4223,Providence,Texas A&M,Providence,0.4168,0.4223,upset_rule
+5,North Carolina,Providence,2,10,77.846,67.668,0.8207,0.1793,North Carolina,North Carolina,Providence,0.1571,0.1793,win_prob
+6,Michigan,Montana,3,14,75.253,68.346,0.8462,0.1538,Michigan,Michigan,Montana,0.1574,0.1538,win_prob
+6,Houston,San Diego St.,6,11,68.636,65.437,0.6849,0.3151,Houston,Houston,San Diego St.,0.3101,0.3151,win_prob
+5,Michigan,Houston,3,6,69.585,69.119,0.5964,0.4036,Houston,Michigan,Houston,0.3909,0.4036,upset_rule
+4,North Carolina,Houston,2,6,75.705,70.383,0.6849,0.3151,North Carolina,North Carolina,Houston,0.2821,0.3151,win_prob
+3,Gonzaga,North Carolina,4,2,78.592,70.643,0.5493,0.4507,Gonzaga,North Carolina,Gonzaga,0.4567,0.5493,upset_rule
+2,Kentucky,Gonzaga,5,4,71.187,79.037,0.3655,0.6345,Kentucky,Gonzaga,Kentucky,0.3018,0.3655,upset_rule
+1,Florida,Kentucky,6,5,73.722,76.37,0.4334,0.5666,Florida,Kentucky,Florida,0.3985,0.4334,upset_rule

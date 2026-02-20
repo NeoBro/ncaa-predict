@@ -19,6 +19,8 @@ from ncaa_predict.tourney_pipeline import (
     build_kaggle_to_ncaa_id_map,
     load_seed_name_map,
     load_seed_map,
+    season_team_stats_from_csv,
+    season_team_stats_from_csv_with_cutoff,
 )
 
 
@@ -77,14 +79,63 @@ def meta_prob(features, model):
     return float(sigmoid(np.dot(features, coef) + b))
 
 
-def simulate_pick(node, round_num, rows, stats, school_ids, seed_map, year, score_models, meta_payload):
+def seed_upset_prior(meta_payload, fav_seed, dog_seed):
+    priors = meta_payload.get("seed_upset_priors", {})
+    pair = priors.get("pair_upset_rate", {})
+    key = "%d-%d" % (int(fav_seed), int(dog_seed))
+    return float(pair.get(key, priors.get("global", 0.35)))
+
+
+def win_features(score_p_a, diff, seed_a, seed_b, meta_payload):
+    fav_seed = min(seed_a, seed_b)
+    dog_seed = max(seed_a, seed_b)
+    upset_prior = seed_upset_prior(meta_payload, fav_seed, dog_seed)
+    if seed_a < seed_b:
+        p_a_seed = 1.0 - upset_prior
+    elif seed_a > seed_b:
+        p_a_seed = upset_prior
+    else:
+        p_a_seed = 0.5
+    return [
+        float(score_p_a),
+        float(diff),
+        float(abs(diff)),
+        float(seed_a),
+        float(seed_b),
+        float(seed_b - seed_a),
+        float(p_a_seed),
+    ]
+
+
+def upset_features(fav_score_p, fav_margin, fav_seed, dog_seed, meta_payload):
+    upset_prior = seed_upset_prior(meta_payload, fav_seed, dog_seed)
+    gap = float(dog_seed - fav_seed)
+    return [
+        float(fav_score_p),
+        float(fav_margin),
+        float(abs(fav_margin)),
+        float(fav_seed),
+        float(dog_seed),
+        gap,
+        float(upset_prior),
+    ]
+
+
+def simulate_pick(
+    node, round_num, rows, stats, school_ids, seed_map, year, score_models, meta_payload,
+    upset_bias=0.0, upset_threshold=0.0, min_dog_win_prob=0.0,
+):
     left, right = node
     if isinstance(left, tuple):
-        team_a = simulate_pick(left, round_num + 1, rows, stats, school_ids, seed_map, year, score_models, meta_payload)
+        team_a = simulate_pick(
+            left, round_num + 1, rows, stats, school_ids, seed_map, year, score_models, meta_payload,
+            upset_bias=upset_bias, upset_threshold=upset_threshold, min_dog_win_prob=min_dog_win_prob)
     else:
         team_a = left
     if isinstance(right, tuple):
-        team_b = simulate_pick(right, round_num + 1, rows, stats, school_ids, seed_map, year, score_models, meta_payload)
+        team_b = simulate_pick(
+            right, round_num + 1, rows, stats, school_ids, seed_map, year, score_models, meta_payload,
+            upset_bias=upset_bias, upset_threshold=upset_threshold, min_dog_win_prob=min_dog_win_prob)
     else:
         team_b = right
 
@@ -95,8 +146,10 @@ def simulate_pick(node, round_num, rows, stats, school_ids, seed_map, year, scor
     ens_a, ens_b, diff, p_a_score = score_outputs(feat, score_payload, score_model_a, score_model_b)
     sa = seed_map.get((year, a_id), 20)
     sb = seed_map.get((year, b_id), 20)
-    win_features = [p_a_score, diff, abs(diff), float(sa), float(sb), float(sb - sa)]
-    p_a_meta = meta_prob(win_features, meta_payload["win_model"])
+    p_a_meta = meta_prob(
+        win_features(p_a_score, diff, sa, sb, meta_payload),
+        meta_payload["win_model"],
+    )
 
     if sa < sb:
         favorite, underdog = team_a, team_b
@@ -108,10 +161,18 @@ def simulate_pick(node, round_num, rows, stats, school_ids, seed_map, year, scor
         fav_seed, dog_seed = sb, sa
         fav_margin = -diff
         fav_p_score = 1 - p_a_score
-    upset_features = [fav_p_score, fav_margin, abs(fav_margin), float(fav_seed), float(dog_seed), float(dog_seed - fav_seed)]
-    p_upset = meta_prob(upset_features, meta_payload["upset_model"])
+    p_upset = meta_prob(
+        upset_features(fav_p_score, fav_margin, fav_seed, dog_seed, meta_payload),
+        meta_payload["upset_model"],
+    )
 
     winner = team_a if p_a_meta >= 0.5 else team_b
+    pick_rule = "win_prob"
+    dog_team = underdog
+    dog_win_prob = p_a_meta if dog_team == team_a else (1 - p_a_meta)
+    if (p_upset + float(upset_bias) >= float(upset_threshold)) and (dog_win_prob >= float(min_dog_win_prob)):
+        winner = dog_team
+        pick_rule = "upset_rule"
     rows.append({
         "round": round_num,
         "team_a": team_a,
@@ -126,6 +187,8 @@ def simulate_pick(node, round_num, rows, stats, school_ids, seed_map, year, scor
         "favorite": favorite,
         "underdog": underdog,
         "upset_prob": round(p_upset, 4),
+        "underdog_win_prob": round(dog_win_prob, 4),
+        "pick_rule": pick_rule,
     })
     return winner
 
@@ -136,9 +199,18 @@ if __name__ == "__main__":
     parser.add_argument("--meta-model-in", required=True)
     parser.add_argument("--kaggle-dir", required=True)
     parser.add_argument("--year", "-y", required=True, type=int)
+    parser.add_argument("--all-games-csv", default=None, help="Optional consolidated games CSV for cutoff-aware stats.")
+    parser.add_argument("--cutoff-month", type=int, default=None)
+    parser.add_argument("--cutoff-day", type=int, default=None)
     parser.add_argument(
         "--bracket-file", default=None,
         help="Optional JSON file describing the bracket tree.")
+    parser.add_argument(
+        "--pick-style", choices=["safe", "balanced", "chaos", "custom"], default="safe",
+        help="Preset upset policy. Use custom to fully control upset flags.")
+    parser.add_argument("--upset-bias", type=float, default=0.0, help="Additive bias applied to upset_prob before threshold.")
+    parser.add_argument("--upset-threshold", type=float, default=1.0, help="If upset_prob+bias >= threshold, pick underdog (subject to min underdog win prob).")
+    parser.add_argument("--min-underdog-win-prob", type=float, default=0.0, help="Minimum underdog win probability required for upset override.")
     parser.add_argument("--out-csv", "-o", default="reports/pick_sheet.csv")
     args = parser.parse_args()
     bracket = load_bracket(args.bracket_file)
@@ -165,8 +237,20 @@ if __name__ == "__main__":
     seed_name_map = load_seed_name_map(args.kaggle_dir)
 
     stats_year = args.year + int(score_payload["config"]["stats_year_offset"])
-    games = load_ncaa_games(stats_year, max_bad_ratio=0.06)
-    stats = _team_stats(games)
+    if args.all_games_csv:
+        cutoff_month = args.cutoff_month
+        cutoff_day = args.cutoff_day
+        if cutoff_month is None:
+            cutoff_month = int(score_payload["config"].get("cutoff_month", 3))
+        if cutoff_day is None:
+            cutoff_day = int(score_payload["config"].get("cutoff_day", 15))
+        stats = season_team_stats_from_csv_with_cutoff(
+            args.all_games_csv, stats_year, cutoff_month=cutoff_month, cutoff_day=cutoff_day)
+        if stats is None:
+            stats = season_team_stats_from_csv(args.all_games_csv, stats_year)
+    else:
+        games = load_ncaa_games(stats_year, max_bad_ratio=0.06)
+        stats = _team_stats(games)
 
     rows = []
     # Fill missing ID-based seeds with name-based lookup to avoid losing upset features.
@@ -183,7 +267,10 @@ if __name__ == "__main__":
 
     champion = simulate_pick(
         bracket, 1, rows, stats, school_ids, seed_map_resolved, args.year,
-        (score_payload, score_model_a, score_model_b), meta_payload)
+        (score_payload, score_model_a, score_model_b), meta_payload,
+        upset_bias=args.upset_bias,
+        upset_threshold=args.upset_threshold,
+        min_dog_win_prob=args.min_underdog_win_prob)
 
     os.makedirs(os.path.dirname(args.out_csv), exist_ok=True)
     with open(args.out_csv, "w", newline="") as f:
@@ -192,3 +279,13 @@ if __name__ == "__main__":
         writer.writerows(rows)
     print("Champion pick: %s" % champion)
     print("Wrote pick sheet: %s" % args.out_csv)
+    presets = {
+        "safe": {"upset_bias": 0.0, "upset_threshold": 1.0, "min_underdog_win_prob": 0.0},
+        "balanced": {"upset_bias": 0.05, "upset_threshold": 0.40, "min_underdog_win_prob": 0.35},
+        "chaos": {"upset_bias": 0.10, "upset_threshold": 0.35, "min_underdog_win_prob": 0.30},
+    }
+    if args.pick_style != "custom":
+        p = presets[args.pick_style]
+        args.upset_bias = p["upset_bias"]
+        args.upset_threshold = p["upset_threshold"]
+        args.min_underdog_win_prob = p["min_underdog_win_prob"]

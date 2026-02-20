@@ -1,0 +1,23 @@
+{
+  "baseline": {
+    "games": 45,
+    "acc": 0.6666666666666666,
+    "upset_total": 14,
+    "upset_hit": 1,
+    "upset_recall": 0.07142857142857142
+  },
+  "seedaware": {
+    "games": 45,
+    "acc": 0.6666666666666666,
+    "upset_total": 14,
+    "upset_hit": 1,
+    "upset_recall": 0.07142857142857142
+  },
+  "upset_tilted": {
+    "games": 44,
+    "acc": 0.6590909090909091,
+    "upset_total": 12,
+    "upset_hit": 6,
+    "upset_recall": 0.5
+  }
+}

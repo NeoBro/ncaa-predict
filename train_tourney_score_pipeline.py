@@ -57,7 +57,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--test-years", "-t", default=[],
         type=list_arg(type=int, container=list))
-    parser.add_argument("--stats-year-offset", type=int, default=-1)
+    parser.add_argument("--stats-year-offset", type=int, default=0)
+    parser.add_argument("--cutoff-month", type=int, default=3)
+    parser.add_argument("--cutoff-day", type=int, default=15)
     parser.add_argument("--ridge-l2", type=float, default=1.0)
     parser.add_argument(
         "--min-id-coverage", type=float, default=0.98,
@@ -104,10 +106,12 @@ if __name__ == "__main__":
 
     x_train, y_a_train, y_b_train, _ = build_tourney_feature_dataset(
         kaggle_games, args.all_games_csv, args.train_years, args.stats_year_offset,
-        kaggle_to_ncaa_id_map=kaggle_to_ncaa)
+        kaggle_to_ncaa_id_map=kaggle_to_ncaa,
+        cutoff_month=args.cutoff_month, cutoff_day=args.cutoff_day)
     x_val, y_a_val, y_b_val, _ = build_tourney_feature_dataset(
         kaggle_games, args.all_games_csv, args.validation_years, args.stats_year_offset,
-        kaggle_to_ncaa_id_map=kaggle_to_ncaa)
+        kaggle_to_ncaa_id_map=kaggle_to_ncaa,
+        cutoff_month=args.cutoff_month, cutoff_day=args.cutoff_day)
 
     model_a = fit_ridge_regression(x_train, y_a_train, l2=args.ridge_l2)
     model_b = fit_ridge_regression(x_train, y_b_train, l2=args.ridge_l2)
@@ -135,7 +139,8 @@ if __name__ == "__main__":
     if args.test_years:
         x_test, y_a_test, y_b_test, _ = build_tourney_feature_dataset(
             kaggle_games, args.all_games_csv, args.test_years, args.stats_year_offset,
-            kaggle_to_ncaa_id_map=kaggle_to_ncaa)
+            kaggle_to_ncaa_id_map=kaggle_to_ncaa,
+            cutoff_month=args.cutoff_month, cutoff_day=args.cutoff_day)
         test_metrics, _, _ = evaluate_models(
             x_test, y_a_test, y_b_test, model_a, model_b, w,
             calibration={"a": cal_a, "b": cal_b})
@@ -154,6 +159,8 @@ if __name__ == "__main__":
             "test_years": args.test_years,
             "stats_year_offset": args.stats_year_offset,
             "ridge_l2": args.ridge_l2,
+            "cutoff_month": args.cutoff_month,
+            "cutoff_day": args.cutoff_day,
             "label_source": "MNCAATourneyCompactResults",
             "min_id_coverage": args.min_id_coverage,
         },
