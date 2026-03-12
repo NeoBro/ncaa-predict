@@ -13,7 +13,10 @@ def parse_year(path, prefix):
 
 
 def merge_yearlies(pattern, prefix, out_path):
-    files = sorted(glob.glob(pattern))
+    files = sorted(
+        p for p in glob.glob(pattern)
+        if os.path.basename(p).replace(prefix, "").replace(".csv", "").isdigit()
+    )
     if not files:
         raise ValueError("No files matched: %s" % pattern)
     frames = []

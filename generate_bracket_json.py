@@ -38,6 +38,13 @@ def normalize_seed_code(seed_val):
     return None
 
 
+def normalize_slot_ref(token):
+    """Normalize seed-like slot refs (e.g., W16a -> W16A) while leaving round slots unchanged."""
+    s = str(token).strip()
+    norm = normalize_seed_code(s)
+    return norm if norm is not None else s
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--kaggle-dir", required=True)
@@ -144,8 +151,8 @@ if __name__ == "__main__":
         progress = False
         keep_rows = []
         for row in unresolved.itertuples():
-            strong = row.StrongSeed
-            weak = row.WeakSeed
+            strong = normalize_slot_ref(row.StrongSeed)
+            weak = normalize_slot_ref(row.WeakSeed)
             if strong in nodes and weak in nodes:
                 nodes[row.Slot] = (nodes[strong], nodes[weak])
                 progress = True
@@ -154,7 +161,12 @@ if __name__ == "__main__":
         unresolved = pd.DataFrame([r._asdict() for r in keep_rows])
 
     if len(unresolved) > 0:
-        missing = sorted(set(unresolved["StrongSeed"]).union(set(unresolved["WeakSeed"])) - set(nodes.keys()))
+        missing_refs = set(
+            normalize_slot_ref(s) for s in unresolved["StrongSeed"].tolist()
+        ).union(
+            normalize_slot_ref(s) for s in unresolved["WeakSeed"].tolist()
+        )
+        missing = sorted(missing_refs - set(nodes.keys()))
         raise ValueError("Could not resolve bracket slots; missing nodes: %s" % missing[:20])
 
     final_slot = sorted(season_slots["Slot"].tolist(), key=slot_sort_key)[-1]
